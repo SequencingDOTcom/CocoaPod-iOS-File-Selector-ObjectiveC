@@ -18,7 +18,7 @@
 
 
 // load all files in one method
-- (void)loadFiles:(void(^)(BOOL success))success;
+- (void)withToken:(SQToken *)token loadFiles:(void(^)(BOOL success))success;
 
 
 // load own files method

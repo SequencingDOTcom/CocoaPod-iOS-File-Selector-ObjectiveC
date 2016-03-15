@@ -10,6 +10,13 @@
 
 #define kMainQueue dispatch_get_main_queue()
 
+@interface SQFilesAPI()
+
+// token property
+@property (readwrite, strong, nonatomic) SQToken *token;
+
+@end
+
 @implementation SQFilesAPI
 
 + (instancetype)sharedInstance {
@@ -31,9 +38,10 @@
 } */
 
 
-- (void)loadFiles:(void(^)(BOOL success))success {
+- (void)withToken:(SQToken *)token loadFiles:(void(^)(BOOL success))success {
     // send request to server to get files assigned to account
     // and then parse these files into categories and subcategories
+    self.token = token;
     
     [self loadFilesFromServer:^(NSArray *files) {
         if (files) {
@@ -53,7 +61,7 @@
 
 
 - (void)loadFilesFromServer:(void (^)(NSArray *files))files {
-    [[SQFilesServerManager sharedInstance] getForFilesWithToken:[[SQAuthResult sharedInstance] token] onSuccess:^(NSArray *filesList) {
+    [[SQFilesServerManager sharedInstance] getForFilesWithToken:self.token onSuccess:^(NSArray *filesList) {
         if (filesList) {
             files(filesList);
         }
