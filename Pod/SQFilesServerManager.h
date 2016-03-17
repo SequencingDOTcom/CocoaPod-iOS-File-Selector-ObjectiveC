@@ -6,14 +6,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class SQAuthResult;
-@class SQToken;
-
 @interface SQFilesServerManager : NSObject
 
 + (instancetype)sharedInstance;     //designated initializer
 
-- (void)getForFilesWithToken:(SQToken *)token
+- (void)getForFilesWithToken:(NSString *)accessToken
                    onSuccess:(void (^)(NSArray *))success
                    onFailure:(void (^)(NSError *))failure;
 

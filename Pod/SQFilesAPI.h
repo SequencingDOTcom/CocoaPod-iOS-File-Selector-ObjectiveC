@@ -4,21 +4,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SQAuthResult.h"
-#import "SQToken.h"
 #import "SQFileSelectorProtocol.h"
 
 @interface SQFilesAPI : NSObject
 
-// instance for protocol
-@property (strong, nonatomic) id<SQFileSelectorProtocol> fileSelectedHandler;
+// instance for protocol delegate
+@property (strong, nonatomic) id <SQFileSelectorProtocol> fileSelectedHandler;
 
 // designated initializer
 + (instancetype)sharedInstance;
 
 
 // load all files in one method
-- (void)withToken:(SQToken *)token loadFiles:(void(^)(BOOL success))success;
+- (void)withToken:(NSString *)accessToken loadFiles:(void(^)(BOOL success))success;
 
 
 // load own files method

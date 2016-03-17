@@ -5,7 +5,6 @@
 
 #import "SQFilesServerManager.h"
 #import "SQFilesHttpHelper.h"
-#import "SQToken.h"
 
 @implementation SQFilesServerManager
 
@@ -27,7 +26,7 @@ static NSString *filesPath      = @"/DataSourceList?all=true";
 #pragma mark -
 #pragma mark Request fuctions
 
-- (void)getForFilesWithToken:(SQToken *)token
+- (void)getForFilesWithToken:(NSString *)accessToken
                    onSuccess:(void (^)(NSArray *))success
                    onFailure:(void (^)(NSError *))failure {
     NSString *apiUrlForFiles = [[NSString alloc] initWithFormat:@"%@%@", apiURL, filesPath];
@@ -36,7 +35,7 @@ static NSString *filesPath      = @"/DataSourceList?all=true";
                                    andHeaders:nil
                                   andUsername:nil
                                   andPassword:nil
-                                     andToken:token.accessToken
+                                     andToken:accessToken
                                  andAuthScope:@"Bearer"
                                 andParameters:nil
                                    andHandler:^(NSString* responseText, NSURLResponse* response, NSError* error) {

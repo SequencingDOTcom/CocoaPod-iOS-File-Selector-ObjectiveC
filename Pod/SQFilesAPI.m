@@ -13,7 +13,7 @@
 @interface SQFilesAPI()
 
 // token property
-@property (readwrite, strong, nonatomic) SQToken *token;
+@property (readwrite, strong, nonatomic) NSString *accessToken;
 
 @end
 
@@ -38,10 +38,10 @@
 } */
 
 
-- (void)withToken:(SQToken *)token loadFiles:(void(^)(BOOL success))success {
+- (void)withToken:(NSString *)accessToken loadFiles:(void(^)(BOOL success))success {
     // send request to server to get files assigned to account
     // and then parse these files into categories and subcategories
-    self.token = token;
+    self.accessToken = [accessToken copy];
     
     [self loadFilesFromServer:^(NSArray *files) {
         if (files) {
@@ -61,7 +61,7 @@
 
 
 - (void)loadFilesFromServer:(void (^)(NSArray *files))files {
-    [[SQFilesServerManager sharedInstance] getForFilesWithToken:self.token onSuccess:^(NSArray *filesList) {
+    [[SQFilesServerManager sharedInstance] getForFilesWithToken:self.accessToken onSuccess:^(NSArray *filesList) {
         if (filesList) {
             files(filesList);
         }

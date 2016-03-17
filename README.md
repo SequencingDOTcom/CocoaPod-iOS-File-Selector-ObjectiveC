@@ -45,106 +45,93 @@ File Selector Code
 Contents
 =========================================
 * Related repos
-* Implementation
-* App chains
-* Authentication flow
-* Steps
+* Cocoa Pod integration
 * Resources
 * Maintainers
 * Contribute
 
-Implementation
+Cocoa Pod integration
 ======================================
-To implement oAuth2 authentication for your app:
+Please follow this guide to install File Selector module in your existed or new project.
 
-1) [Register](https://sequencing.com/user/register/) for a free account
+##### Step 1: Install oAuth module
+* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only
+* create a new project in Xcode
+* install oAuth pod
+* see instruction 
+	```https://github.com/SequencingDOTcom/CocoaPods-plugin-for-iOS-Objective-C```
+* or see demo example with oAuth module installed 
+	```https://github.com/SequencingDOTcom/OAuth2-code-with-demo/tree/master/objective-c```
+* set up the authorization parameters, needed methods and check if user can login
 
-2) Add [Sequencing.com's oAuth2 code](https://github.com/SequencingDOTcom/oAuth2-code-and-demo) from this repo to your app
+##### Step 2: Install File Selector pod
+* see general CocoaPods instruction 
+	```https://cocoapods.org > getting started```
+* create Podfile in your project directory: 
+	```$ pod init```
+* specify "sequencing-fileselector-objc" pod parameters: 
+	```$ pod 'sequencing-file-selector-api-objc', '~> 1.0.1'```
+* install the dependency in your project: 
+	```$ pod install```
+* always open the Xcode workspace instead of the project file: 
+	```$ open *.xcworkspace```
 
-3) [Generate an OAuth2 secret](https://sequencing.com/api-secret-generator) and insert the secret into the OAuth2 code
+##### Step 3: Set up file selector UI
+* add "Storyboard Reference" in your Main.storyboard
+	* select added Storyboard Reference
+	* open Utilities > Atributes inspector
+	* select "TabbarFileSelector" in Storyboard dropbown
+* add segue from your viewcontroller to created Storyboard Reference
+	* open Utilities > Atributes inspector
+	* name this segue as "GET_FILES" in Identifier field
 
-Once OAuth2 authentication is implemented, select one or more [app chains](https://sequencing.com/app-chains) that will provide information you can use to personalize your app.
+##### Step 4: Subscribe for file selector protocol
+* add file selector protocol import in your class were you getting and handling file selector: 
+	```#import "SQFileSelectorProtocol.h"```
+* subscribe your class to file selector protocol: 
+	```<SQFileSelectorProtocol>```
+* add import: 
+	```#import "SQFilesAPI.h"```
+* subscribe your class as handler/delegate for selected file in file selector: 
+	```[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];```
+* implement "handleFileSelected" method from protocol
+	```
+	- (void)handleFileSelected:(NSDictionary *)file {
+		// your code here
+	}
+	```
 
-App chains
-======================================
-Search and find app chains -> https://sequencing.com/app-chains/
+##### Step 5: Use file selector 
+* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
+* specify UI segue name constant
+	```static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";```
+* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
+	```
+	[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
+		// your code here
+	}];
+	```
+	```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
+	```[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];```
+	note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+* selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+* each file is a NSDictionary object with following keys and values:
+	```
+	DateAdded:		"string value"
+    Ext:			"string value"
+    FileCategory:	"string value"
+    FileSubType:	"string value"
+    FileType:		"string value"
+    FriendlyDesc1:	"string value"
+    FriendlyDesc2:	"string value"
+    Id:				"string value"
+    Name:			"string value"
+    Population:		"string value"
+    Sex:			"string value"
+    ```
 
-Each app chain is composed of 
-* an **API request** to Sequencing.com
- * this request is secured using oAuth2
-* analysis of the app user's genes
- * each app chain analyzes a specific trait or condition
- * there are thousands of app chains to choose from
- * all analysis occurs in real-time at Sequencing.com
-* an **API response** to your app
- * the information provided by the response allows your app to tailor itself to the app user based on the user's genes.
- * the documentation for each app chain provides a list of all possible API responses. The response for most app chains are simply 'Yes' or 'No'.
-
-Example
-* App Chain: It is very important for this person's health to apply sunscreen with SPF +30 whenever it is sunny or even partly sunny.
-* Possible responses: Yes, No, Insufficient Data, Error
-
-While there are already app chains to personalize most apps, if you need something but don't see an app chain for it, tell us! (ie email us: gittaca@sequencing.com).
-
-Authentication flow
-======================================
-Sequencing.com uses standard OAuth approach which enables applications to obtain limited access to user accounts on an HTTP service from 3rd party applications without exposing the user's password. OAuth acts as an intermediary on behalf of the end user, providing the service with an access token that authorizes specific account information to be shared.
-
-![Authentication sequence diagram]
-(https://github.com/SequencingDOTcom/oAuth2-code-and-demo/blob/master/screenshots/oauth_activity.png)
-
-
-## Steps
-
-### Step 1: Authorization Code Link
-
-First, the user is given an authorization code link that looks like the following:
-
-```
-https://sequencing.com/oauth2/authorize?redirect_uri=REDIRECT_URL&response_type=code&state=STATE&client_id=CLIENT_ID&scope=SCOPES
-```
-
-Here is an explanation of the link components:
-
-* https://sequencing.com/oauth2/authorize: the API authorization endpoint
-* client_id=CLIENT_ID: the application's client ID (how the API identifies the application)
-* redirect_uri=REDIRECT_URL: where the service redirects the user-agent after an authorization code is granted
-* response_type=code: specifies that your application is requesting an authorization code grant
-* scope=CODES: specifies the level of access that the application is requesting
-
-![login dialog](https://github.com/SequencingDOTcom/oAuth2-code-and-demo/blob/master/screenshots/oauth_auth.png)
-
-### Step 2: User Authorizes Application
-
-When the user clicks the link, they must first log in to the service, to authenticate their identity (unless they are already logged in). Then they will be prompted by the service to authorize or deny the application access to their account. Here is an example authorize application prompt
-
-![grant dialog](https://github.com/SequencingDOTcom/oAuth2-code-and-demo/blob/master/screenshots/oauth_grant.png)
-
-### Step 3: Application Receives Authorization Code
-
-If the user clicks "Authorize Application", the service redirects the user-agent to the application redirect URI, which was specified during the client registration, along with an authorization code. The redirect would look something like this (assuming the application is "php-oauth-demo.sequencing.com"):
-
-```
-https://php-oauth-demo.sequencing.com/index.php?code=AUTHORIZATION_CODE
-```
-
-### Step 4: Application Requests Access Token
-
-The application requests an access token from the API, by passing the authorization code along with authentication details, including the client secret, to the API token endpoint. Here is an example POST request to Sequencing.com token endpoint:
-
-```
-https://sequencing.com/oauth2/token
-```
-
-Following POST parameters have to be sent
-
-* grant_type='authorization_code'
-* code=AUTHORIZATION_CODE (where AUTHORIZATION_CODE is a code acquired in a "code" parameter in the result of redirect from sequencing.com)
-* redirect_uri=REDIRECT_URL (where REDIRECT_URL is the same URL as the one used in step 1)
-
-### Step 5: Application Receives Access Token
-
-If the authorization is valid, the API will send a JSON response containing the access token  to the application.
 
 Resources
 ======================================
