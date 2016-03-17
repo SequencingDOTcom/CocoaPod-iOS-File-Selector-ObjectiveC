@@ -52,95 +52,99 @@ Contents
 
 Cocoa Pod integration
 ======================================
+
 Please follow this guide to install File Selector module in your existed or new project.
 
-##### Step 1: Install oAuth module
-* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
-* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only
-* create a new project in Xcode
-* install oAuth pod
-* see instruction 
-	```https://github.com/SequencingDOTcom/CocoaPods-plugin-for-iOS-Objective-C```
-* or see demo example with oAuth module installed 
-	```https://github.com/SequencingDOTcom/OAuth2-code-with-demo/tree/master/objective-c```
-* set up the authorization parameters, needed methods and check if user can login
+* Install oAuth module
+	* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+	* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only
+	* create a new project in Xcode
+	* install oAuth pod
+	* see instruction 
+		```
+		https://github.com/SequencingDOTcom/CocoaPods-plugin-for-iOS-Objective-C
+		```
+	* or see demo example with oAuth module installed 
+		```
+		https://github.com/SequencingDOTcom/OAuth2-code-with-demo/tree/master/objective-c
+		```
+	* set up the authorization parameters, needed methods and check if user can login
 
-##### Step 2: Install File Selector pod
-* see general CocoaPods instruction 
-	```https://cocoapods.org > getting started```
-* create Podfile in your project directory: 
-	```$ pod init```
-* specify "sequencing-fileselector-objc" pod parameters: 
-	```$ pod 'sequencing-file-selector-api-objc', '~> 1.0.1'```
-* install the dependency in your project: 
-	```$ pod install```
-* always open the Xcode workspace instead of the project file: 
-	```$ open *.xcworkspace```
+* Install File Selector pod
+	* see general CocoaPods instruction 
+		```
+		https://cocoapods.org > getting started
+		```
+	* create Podfile in your project directory: 
+		```
+		$ pod init
+		```
+	* specify "sequencing-fileselector-objc" pod parameters: 
+		```
+		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.1'
+		```
+	* install the dependency in your project: 
+		```
+		$ pod install
+		```
+	* always open the Xcode workspace instead of the project file: 
+		```
+		$ open *.xcworkspace
+		```
 
-##### Step 3: Set up file selector UI
-* add "Storyboard Reference" in your Main.storyboard
-	* select added Storyboard Reference
-	* open Utilities > Atributes inspector
-	* select "TabbarFileSelector" in Storyboard dropbown
-* add segue from your viewcontroller to created Storyboard Reference
-	* open Utilities > Atributes inspector
-	* name this segue as "GET_FILES" in Identifier field
+* Set up file selector UI
+	* add "Storyboard Reference" in your Main.storyboard
+		* select added Storyboard Reference
+		* open Utilities > Atributes inspector
+		* select ```TabbarFileSelector``` in Storyboard dropbown
+	* add segue from your viewcontroller to created Storyboard Reference
+		* open Utilities > Atributes inspector
+		* name this segue as ```GET_FILES``` in Identifier field
 
-##### Step 4: Subscribe for file selector protocol
-* add file selector protocol import in your class were you getting and handling file selector:
+* Subscribe for file selector protocol
+	* add file selector protocol import in your class were you getting and handling file selector:
 		```
 		#import "SQFileSelectorProtocol.h"
-		```
-		
-* subscribe your class to file selector protocol: 
+		```	
+	* subscribe your class to file selector protocol: 
 		```
 		<SQFileSelectorProtocol>
 		```
-
-* add import: 
+	* add import: 
 		```
 		#import "SQFilesAPI.h"
 		```
-
-* subscribe your class as handler/delegate for selected file in file selector: 
+	* subscribe your class as handler/delegate for selected file in file selector: 
 		```
 		[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];
 		```
-
-* implement "handleFileSelected" method from protocol
+	* implement "handleFileSelected" method from protocol
 		```
 		- (void)handleFileSelected:(NSDictionary *)file {
 			// your code here
 		}
 		```
 
-##### Step 5: Use file selector 
-* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
-
-* specify UI segue name constant
+* Use file selector 
+	* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
+	* specify UI segue name constant
 		```
 		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
-		```
-		
-* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
+		```	
+	* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
 		```
 		[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
 			// your code here
 		}];
 		```
-		
-```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
-
-* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
+		```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+	* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
 		```
 		[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
 		```
-	
-note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
-
-* selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
-
-* each file is a NSDictionary object with following keys and values:
+		note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+	* selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+	* each file is a NSDictionary object with following keys and values:
 		```
 		DateAdded:		"string value"
 		Ext:			"string value"
@@ -154,7 +158,6 @@ note: this code will work only if you already set up the reference to TabbarFile
 		Population:		"string value"
 		Sex:			"string value"
     	```
-
 
 
 Resources
