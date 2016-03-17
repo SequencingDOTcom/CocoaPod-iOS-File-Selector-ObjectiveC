@@ -142,9 +142,10 @@ Please follow this guide to install File Selector module in your existed or new 
 		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
 		```	
 		
-	* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
+	* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access).
+		pay attention, you need to pass on the String value of ```accessToken``` as a parameter for this method:
 		```
-		[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
+		[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
 			// your code here
 		}];
 		```
