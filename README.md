@@ -87,50 +87,74 @@ Please follow this guide to install File Selector module in your existed or new 
 	* name this segue as "GET_FILES" in Identifier field
 
 ##### Step 4: Subscribe for file selector protocol
-* add file selector protocol import in your class were you getting and handling file selector: 
-	```#import "SQFileSelectorProtocol.h"```
+* add file selector protocol import in your class were you getting and handling file selector:
+		```
+		#import "SQFileSelectorProtocol.h"
+		```
+		
 * subscribe your class to file selector protocol: 
-	```<SQFileSelectorProtocol>```
+		```
+		<SQFileSelectorProtocol>
+		```
+
 * add import: 
-	```#import "SQFilesAPI.h"```
+		```
+		#import "SQFilesAPI.h"
+		```
+
 * subscribe your class as handler/delegate for selected file in file selector: 
-	```[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];```
+		```
+		[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];
+		```
+
 * implement "handleFileSelected" method from protocol
-	```
-	- (void)handleFileSelected:(NSDictionary *)file {
-		// your code here
-	}
-	```
+		```
+		- (void)handleFileSelected:(NSDictionary *)file {
+			// your code here
+		}
+		```
 
 ##### Step 5: Use file selector 
 * set up some button for getting/viewing files for logged in user, and specify delegate method for this button
+
 * specify UI segue name constant
-	```static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";```
+		```
+		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
+		```
+		
 * you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
-	```
-	[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
-		// your code here
-	}];
-	```
-	```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+		```
+		[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
+			// your code here
+		}];
+		```
+		
+```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+
 * if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
-	```[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];```
-	note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+		```
+		[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
+		```
+	
+note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+
 * selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+
 * each file is a NSDictionary object with following keys and values:
-	```
-	DateAdded:		"string value"
-    Ext:			"string value"
-    FileCategory:	"string value"
-    FileSubType:	"string value"
-    FileType:		"string value"
-    FriendlyDesc1:	"string value"
-    FriendlyDesc2:	"string value"
-    Id:				"string value"
-    Name:			"string value"
-    Population:		"string value"
-    Sex:			"string value"
-    ```
+		```
+		DateAdded:		"string value"
+		Ext:			"string value"
+		FileCategory:	"string value"
+		FileSubType:	"string value"
+		FileType:		"string value"
+		FriendlyDesc1:	"string value"
+		FriendlyDesc2:	"string value"
+		Id:				"string value"
+		Name:			"string value"
+		Population:		"string value"
+		Sex:			"string value"
+    	```
+
 
 
 Resources
