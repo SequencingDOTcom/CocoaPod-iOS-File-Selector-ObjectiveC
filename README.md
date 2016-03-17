@@ -64,10 +64,12 @@ Please follow this guide to install File Selector module in your existed or new 
 		```
 		https://github.com/SequencingDOTcom/CocoaPods-plugin-for-iOS-Objective-C
 		```
+		
 	* or see demo example with oAuth module installed 
 		```
 		https://github.com/SequencingDOTcom/OAuth2-code-with-demo/tree/master/objective-c
 		```
+		
 	* set up the authorization parameters, needed methods and check if user can login
 
 * Install File Selector pod
@@ -75,18 +77,22 @@ Please follow this guide to install File Selector module in your existed or new 
 		```
 		https://cocoapods.org > getting started
 		```
+		
 	* create Podfile in your project directory: 
 		```
 		$ pod init
 		```
+		
 	* specify "sequencing-fileselector-objc" pod parameters: 
 		```
 		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.1'
 		```
+		
 	* install the dependency in your project: 
 		```
 		$ pod install
 		```
+		
 	* always open the Xcode workspace instead of the project file: 
 		```
 		$ open *.xcworkspace
@@ -106,18 +112,22 @@ Please follow this guide to install File Selector module in your existed or new 
 		```
 		#import "SQFileSelectorProtocol.h"
 		```	
+		
 	* subscribe your class to file selector protocol: 
 		```
 		<SQFileSelectorProtocol>
 		```
+		
 	* add import: 
 		```
 		#import "SQFilesAPI.h"
 		```
+		
 	* subscribe your class as handler/delegate for selected file in file selector: 
 		```
 		[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];
 		```
+		
 	* implement "handleFileSelected" method from protocol
 		```
 		- (void)handleFileSelected:(NSDictionary *)file {
@@ -131,33 +141,40 @@ Please follow this guide to install File Selector module in your existed or new 
 		```
 		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
 		```	
+		
 	* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access):
 		```
 		[[SQFilesAPI sharedInstance] loadFiles:^(BOOL success) {
 			// your code here
 		}];
 		```
+		
 		```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+		
 	* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
 		```
 		[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
 		```
+		
 		note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+		
 	* selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+	
 	* each file is a NSDictionary object with following keys and values:
 		```
-		DateAdded:		"string value"
-		Ext:			"string value"
-		FileCategory:	"string value"
-		FileSubType:	"string value"
-		FileType:		"string value"
-		FriendlyDesc1:	"string value"
-		FriendlyDesc2:	"string value"
-		Id:				"string value"
-		Name:			"string value"
-		Population:		"string value"
-		Sex:			"string value"
+		DateAdded:     "string value"
+		Ext:           "string value"
+		FileCategory:  "string value"
+		FileSubType:   "string value"
+		FileType:      "string value"
+		FriendlyDesc1: "string value"
+		FriendlyDesc2: "string value"
+		Id:            "string value"
+		Name:          "string value"
+		Population:    "string value"
+		Sex:           "string value"
     	```
+
 
 
 Resources
