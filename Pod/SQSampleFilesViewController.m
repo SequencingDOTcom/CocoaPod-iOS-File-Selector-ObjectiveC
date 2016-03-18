@@ -72,9 +72,10 @@
     
     // set image for tab bar item
     NSString *myFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"myfiles" ofType:@"png"];
-    UIImage *myFilesImage = [[UIImage alloc] initWithContentsOfFile:myFilesItem];
+    // UIImage *myFilesImage = [[UIImage alloc] initWithContentsOfFile:myFilesItem];
+    
     NSString *sampleFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"samplefiles" ofType:@"png"];
-    UIImage *sampleFilesImage = [[UIImage alloc] initWithContentsOfFile:sampleFilesItem];
+    // UIImage *sampleFilesImage = [[UIImage alloc] initWithContentsOfFile:sampleFilesItem];
     
     UITabBarItem *myItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
     myItem.image = [UIImage imageNamed:myFilesItem];

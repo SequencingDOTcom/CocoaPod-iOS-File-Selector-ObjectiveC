@@ -170,7 +170,7 @@
         <scene sceneID="7E8-xz-r7F">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Jox-kA-aka" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sample Files" image="list-simple-star-7.png" id="A6q-fl-hKH"/>
+                    <tabBarItem key="tabBarItem" title="Sample Files" id="A6q-fl-hKH"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OZ6-Cb-cbe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -189,7 +189,7 @@
         <scene sceneID="U3E-vc-uAe">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nUK-sN-PGG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Files" image="paper-piece-star-7.png" id="IdD-1W-uiy"/>
+                    <tabBarItem key="tabBarItem" title="My Files" id="IdD-1W-uiy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PjO-EW-6si">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -205,8 +205,4 @@
             <point key="canvasLocation" x="1392" y="146"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="list-simple-star-7.png" width="30" height="30"/>
-        <image name="paper-piece-star-7.png" width="30" height="30"/>
-    </resources>
 </document>
