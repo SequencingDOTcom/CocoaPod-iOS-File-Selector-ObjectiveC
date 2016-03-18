@@ -55,37 +55,31 @@ Cocoa Pod integration
 
 Please follow this guide to install File Selector module in your existed or new project.
 
-* Install oAuth module
-	* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
-	* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only
-	* create a new project in Xcode
-	* install oAuth pod
-	* see instruction 
-		```
-		https://github.com/SequencingDOTcom/CocoaPods-plugin-for-iOS-Objective-C
-		```
-		
-	* or see demo example with oAuth module installed 
-		```
-		https://github.com/SequencingDOTcom/OAuth2-code-with-demo/tree/master/objective-c
-		```
-		
-	* set up the authorization parameters, needed methods and check if user can login
-
-* Install File Selector pod
+* Install oAuth module and File Selector modules
 	* see general CocoaPods instruction 
 		```
 		https://cocoapods.org > getting started
 		```
 		
+	* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+	
+	* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only
+	
+	* create a new project in Xcode
+	
 	* create Podfile in your project directory: 
 		```
 		$ pod init
 		```
 		
-	* specify "sequencing-fileselector-objc" pod parameters: 
+	* specify ```sequencing-oauth-api-objc``` pod parameters: 
 		```
-		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.1'
+		$ pod 'sequencing-oauth-api-objc', '~> 1.0.2'
+		```
+		
+	* specify ```sequencing-fileselector-objc``` pod parameters: 
+		```
+		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.3'
 		```
 		
 	* install the dependency in your project: 
@@ -98,14 +92,21 @@ Please follow this guide to install File Selector module in your existed or new 
 		$ open *.xcworkspace
 		```
 
+* Set up OAuth module
+	* [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+
 * Set up file selector UI
 	* add "Storyboard Reference" in your Main.storyboard
 		* select added Storyboard Reference
 		* open Utilities > Atributes inspector
-		* select ```TabbarFileSelector``` in Storyboard dropbown
-	* add segue from your viewcontroller to created Storyboard Reference
+		* select ```TabbarFileSelector``` in Storyboard dropdown
+		
+	* add segue from your ViewController to created Storyboard Reference
 		* open Utilities > Atributes inspector
 		* name this segue as ```GET_FILES``` in Identifier field
+		
+	* add ```TabbarFileSelector.storyboard``` into your project Bundle Resources
+		* Build Phases > Copy Bundle Resources > add your ```TabbarFileSelector``` storyboard using the icon "+"
 
 * Subscribe for file selector protocol
 	* add file selector protocol import in your class were you getting and handling file selector:
@@ -142,15 +143,15 @@ Please follow this guide to install File Selector module in your existed or new 
 		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
 		```	
 		
-	* you can load/get files, list of my files and list of sample files, via ```loadFiles"``` (via shared instance init access).
-		pay attention, you need to pass on the String value of ```accessToken``` as a parameter for this method:
+	* you can load/get files, list of my files and list of sample files, via ```withToken:(NSString *)accessToken loadFiles:(void(^)(BOOL success))success``` method (via ```SQFilesAPI``` class with shared instance init access).
+		pay attention, you need to pass on the String value of ```token.accessToken``` object as a parameter for this method:
 		```
 		[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
 			// your code here
 		}];
 		```
 		
-		```loadFiles``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+		```withToken: loadFiles:``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
 		
 	* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
 		```
