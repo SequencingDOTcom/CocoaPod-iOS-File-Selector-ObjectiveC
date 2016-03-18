@@ -48,8 +48,40 @@
     
     // extended navigation bar
     [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
+    
+    // set up images from bundle
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"ResourceBundle" ofType:@"bundle"];
+    
+    NSString *transparentPixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_clear_pixel" ofType:@"png"];
+    UIImage *transparentPixel = [[UIImage alloc] initWithContentsOfFile:transparentPixelImageName];
+    [self.navigationController.navigationBar setShadowImage:transparentPixel];
+    
+    NSString *pixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_pixel" ofType:@"png"];
+    UIImage *pixel = [[UIImage alloc] initWithContentsOfFile:pixelImageName];
+    [self.navigationController.navigationBar setBackgroundImage:pixel forBarMetrics:UIBarMetricsDefault];
+    
+    // [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
+    // [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
+    
+    /*
+    // set image for tab bar item
+    NSString *tabBarItemImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"sample_files" ofType:@"png"];
+    UIImage *tabBarItemImage = [[UIImage alloc] initWithContentsOfFile:tabBarItemImageName];
+    UITabBarItem *tabBarItem = self.tabBarItem;
+    [tabBarItem setImage:tabBarItemImage]; */
+    
+    // set image for tab bar item
+    NSString *myFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"myfiles" ofType:@"png"];
+    UIImage *myFilesImage = [[UIImage alloc] initWithContentsOfFile:myFilesItem];
+    NSString *sampleFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"samplefiles" ofType:@"png"];
+    UIImage *sampleFilesImage = [[UIImage alloc] initWithContentsOfFile:sampleFilesItem];
+    
+    UITabBarItem *myItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
+    myItem.image = [UIImage imageNamed:myFilesItem];
+    
+    UITabBarItem *sampleItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
+    sampleItem.image = [UIImage imageNamed:sampleFilesItem];
+    
     
     // infoButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
