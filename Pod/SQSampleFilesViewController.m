@@ -46,48 +46,30 @@
     self.title = @"Sample Files";
     [self.navigationItem setTitle:@"Select file"];
     
-    // extended navigation bar
+    
+    // setup extended navbar images
     [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"nav_clear_pixel"]];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_pixel"] forBarMetrics:UIBarMetricsDefault];
     
-    // set up images from bundle
-    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"ResourceBundle" ofType:@"bundle"];
     
-    NSString *transparentPixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_clear_pixel" ofType:@"png"];
-    UIImage *transparentPixel = [[UIImage alloc] initWithContentsOfFile:transparentPixelImageName];
-    [self.navigationController.navigationBar setShadowImage:transparentPixel];
+    // set up images for TabBar
+    UITabBarItem *tabBarItem_MyFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
+    tabBarItem_MyFiles.image = [UIImage imageNamed:@"icon_myfiles"];
     
-    NSString *pixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_pixel" ofType:@"png"];
-    UIImage *pixel = [[UIImage alloc] initWithContentsOfFile:pixelImageName];
-    [self.navigationController.navigationBar setBackgroundImage:pixel forBarMetrics:UIBarMetricsDefault];
+    UIImage *myFiles_SelectedImage = [UIImage imageNamed:@"icon_myfiles_color"];
+    myFiles_SelectedImage = [myFiles_SelectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [tabBarItem_MyFiles setSelectedImage:myFiles_SelectedImage];
     
-    // [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
-    // [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
-    
-    /*
-    // set image for tab bar item
-    NSString *tabBarItemImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"sample_files" ofType:@"png"];
-    UIImage *tabBarItemImage = [[UIImage alloc] initWithContentsOfFile:tabBarItemImageName];
-    UITabBarItem *tabBarItem = self.tabBarItem;
-    [tabBarItem setImage:tabBarItemImage]; */
-    
-    // set image for tab bar item
-    NSString *myFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"myfiles" ofType:@"png"];
-    // UIImage *myFilesImage = [[UIImage alloc] initWithContentsOfFile:myFilesItem];
-    
-    NSString *sampleFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"samplefiles" ofType:@"png"];
-    // UIImage *sampleFilesImage = [[UIImage alloc] initWithContentsOfFile:sampleFilesItem];
-    
-    UITabBarItem *myItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
-    myItem.image = [UIImage imageNamed:myFilesItem];
-    
-    UITabBarItem *sampleItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
-    sampleItem.image = [UIImage imageNamed:sampleFilesItem];
+    UITabBarItem *tabBarItem_SampleFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
+    tabBarItem_SampleFiles.image = [UIImage imageNamed:@"icon_samplefiles"];
     
     
     // infoButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showInfoPopover) forControlEvents:UIControlEventTouchUpInside];
     self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
     
     // continueButton
     self.continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue"
@@ -96,9 +78,11 @@
                                                           action:@selector(fileIsSelected)];
     self.continueButton.enabled = NO;
     
+    
     // rightBarButtonItems
     NSArray *rightButtonsArray = [[NSArray alloc] initWithObjects:self.continueButton, self.infoButton, nil];
     self.navigationItem.rightBarButtonItems = rightButtonsArray;
+    
     
     // "Back" button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
@@ -107,12 +91,14 @@
                                                                   action:@selector(backButtonPressed)];
     [self.navigationItem setLeftBarButtonItem:backButton animated:YES];
     
+    
     // prepare tableView
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
     // allows using "native" radio button for selecting row
     [self.tableView setEditing:YES animated:YES];
+    
     
     // prepare array with segmented control items and indexes in source
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
@@ -187,38 +173,38 @@
     [self.tableView reloadData];
     
     /*
-    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
-    
-    NSString *selectedSegmentItem = [sender titleForSegmentAtIndex:sender.selectedSegmentIndex];
-    NSArray *subCategories = @[@"All", @"Men", @"Women"];
-    int subCategory = (int)[subCategories indexOfObject:selectedSegmentItem];
-    
-    switch (subCategory) {
-        case 0: {
-            // "All" item selected
-            SQSectionInfo *section = (filesContainer.sampleSectionsArray)[0];
-            self.filesArray = section.filesArray;
-            self.filesHeightsArray = section.rowHeights;
-        } break;
-            
-        case 1: {
-            // "Men" item selected
-            SQSectionInfo *section = (filesContainer.sampleSectionsArray)[1];
-            self.filesArray = section.filesArray;
-            self.filesHeightsArray = section.rowHeights;
-        } break;
-            
-        case 2: {
-            // "Women" item selected
-            SQSectionInfo *section = (filesContainer.sampleSectionsArray)[2];
-            self.filesArray = section.filesArray;
-            self.filesHeightsArray = section.rowHeights;
-        } break;
-            
-        default:
-            break;
-    }
-    [self.tableView reloadData]; */
+     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
+     
+     NSString *selectedSegmentItem = [sender titleForSegmentAtIndex:sender.selectedSegmentIndex];
+     NSArray *subCategories = @[@"All", @"Men", @"Women"];
+     int subCategory = (int)[subCategories indexOfObject:selectedSegmentItem];
+     
+     switch (subCategory) {
+     case 0: {
+     // "All" item selected
+     SQSectionInfo *section = (filesContainer.sampleSectionsArray)[0];
+     self.filesArray = section.filesArray;
+     self.filesHeightsArray = section.rowHeights;
+     } break;
+     
+     case 1: {
+     // "Men" item selected
+     SQSectionInfo *section = (filesContainer.sampleSectionsArray)[1];
+     self.filesArray = section.filesArray;
+     self.filesHeightsArray = section.rowHeights;
+     } break;
+     
+     case 2: {
+     // "Women" item selected
+     SQSectionInfo *section = (filesContainer.sampleSectionsArray)[2];
+     self.filesArray = section.filesArray;
+     self.filesHeightsArray = section.rowHeights;
+     } break;
+     
+     default:
+     break;
+     }
+     [self.tableView reloadData]; */
 }
 
 

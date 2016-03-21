@@ -46,41 +46,30 @@
     self.title = @"My Files";
     [self.navigationItem setTitle:@"Select file"];
     
-    // extended navigation bar
+    
+    // setup extended navbar images
     [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"nav_clear_pixel"]];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_pixel"] forBarMetrics:UIBarMetricsDefault];
+
     
-    // set up images from bundle
-    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"ResourceBundle" ofType:@"bundle"];
+    // set up images for TabBar
+    UITabBarItem *tabBarItem_MyFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
+    tabBarItem_MyFiles.image = [UIImage imageNamed:@"icon_myfiles"];
     
-    NSString *transparentPixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_clear_pixel" ofType:@"png"];
-    UIImage *transparentPixel = [[UIImage alloc] initWithContentsOfFile:transparentPixelImageName];
-    [self.navigationController.navigationBar setShadowImage:transparentPixel];
+    UIImage *myFiles_SelectedImage = [UIImage imageNamed:@"icon_myfiles_color"];
+    myFiles_SelectedImage = [myFiles_SelectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [tabBarItem_MyFiles setSelectedImage:myFiles_SelectedImage];
     
-    NSString *pixelImageName = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"nav_pixel" ofType:@"png"];
-    UIImage *pixel = [[UIImage alloc] initWithContentsOfFile:pixelImageName];
-    [self.navigationController.navigationBar setBackgroundImage:pixel forBarMetrics:UIBarMetricsDefault];
+    UITabBarItem *tabBarItem_SampleFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
+    tabBarItem_SampleFiles.image = [UIImage imageNamed:@"icon_samplefiles"];
     
-    // [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
-    // [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
-    
-    
-    // set image for tab bar item
-    NSString *myFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"myfiles" ofType:@"png"];
-    // UIImage *myFilesImage = [[UIImage alloc] initWithContentsOfFile:myFilesItem];
-    
-    NSString *sampleFilesItem = [[NSBundle bundleWithPath:bundlePath] pathForResource:@"samplefiles" ofType:@"png"];
-    // UIImage *sampleFilesImage = [[UIImage alloc] initWithContentsOfFile:sampleFilesItem];
-    
-    UITabBarItem *myItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:0];
-    myItem.image = [UIImage imageNamed:myFilesItem];
-    
-    UITabBarItem *sampleItem = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
-    sampleItem.image = [UIImage imageNamed:sampleFilesItem];
     
     // infoButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showInfoPopover) forControlEvents:UIControlEventTouchUpInside];
     self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
     
     // continueButton
     self.continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue"
@@ -89,9 +78,11 @@
                                                           action:@selector(fileIsSelected)];
     self.continueButton.enabled = NO;
     
+    
     // rightBarButtonItems
     NSArray *rightButtonsArray = [[NSArray alloc] initWithObjects:self.continueButton, self.infoButton, nil];
     self.navigationItem.rightBarButtonItems = rightButtonsArray;
+    
     
     // "Back" button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
@@ -99,6 +90,7 @@
                                                                   target:self
                                                                   action:@selector(backButtonPressed)];
     [self.navigationItem setLeftBarButtonItem:backButton animated:YES];
+    
     
     // prepare tableView
     self.tableView.dataSource = self;
@@ -109,6 +101,7 @@
     
     // prepare array with segmented control items and indexes in source
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
+    
     
     // checking if we have no myFiles assigned to account
     if ([filesContainer.mySectionsArray count] > 0) {
