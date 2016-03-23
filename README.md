@@ -163,6 +163,36 @@ Please follow this guide to install File Selector module in your existed or new 
 		
 		note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
 		
+	* example of ```Select File``` button
+		```
+		// set up select file button
+    	UIButton *selectFileButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    	[selectFileButton setTitle:@"Select file" forState:UIControlStateNormal];
+    	[selectFileButton addTarget:self action:@selector(getFiles:) forControlEvents:UIControlEventTouchUpInside];
+    	[selectFileButton sizeToFit];
+    	[selectFileButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    	[self.view addSubview:selectFileButton];
+    
+    	// adding constraints for select file
+    	NSLayoutConstraint *xCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
+    															attribute:NSLayoutAttributeCenterX
+    															relatedBy:NSLayoutRelationEqual
+    															toItem:self.view
+    															attribute:NSLayoutAttributeCenterX
+    															multiplier:1
+    															constant:0];
+    															
+    	NSLayoutConstraint *yCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
+    															attribute:NSLayoutAttributeCenterY
+    															relatedBy:NSLayoutRelationEqual
+    															toItem:self.view
+    															attribute:NSLayoutAttributeCenterY
+    															multiplier:1
+    															constant:0];
+    	[self.view addConstraint:xCenter];
+    	[self.view addConstraint:yCenter];
+		```
+	
 	* example of ```getFiles``` method
 		```
 		- (void)getFiles:(UIButton *)sender {	
