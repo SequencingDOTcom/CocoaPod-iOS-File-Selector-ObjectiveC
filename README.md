@@ -1,4 +1,4 @@
-# File Selector CocoPod plugin for adding Squencing.com's Real-Time Personalization technology to iOS apps coded in Objective-C
+# File Selector CocoPod plugin for adding Sequencing.com's Real-Time Personalization technology to iOS apps coded in Objective-C
 =========================================
 This repo contains the plug-n-play CocoPod for implementing a customizable File Selector so your app can access files stored securely at [Sequencing.com](https://sequencing.com/). 
 
@@ -74,12 +74,12 @@ Please follow this guide to install File Selector module in your existed or new 
 		
 	* specify ```sequencing-oauth-api-objc``` pod parameters: 
 		```
-		$ pod 'sequencing-oauth-api-objc', '~> 1.0.2'
+		$ pod 'sequencing-oauth-api-objc', '~> 1.0.3'
 		```
 		
 	* specify ```sequencing-fileselector-objc``` pod parameters: 
 		```
-		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.3'
+		$ pod 'sequencing-file-selector-api-objc', '~> 1.0.5'
 		```
 		
 	* install the dependency in your project: 
@@ -104,6 +104,7 @@ Please follow this guide to install File Selector module in your existed or new 
 	* add segue from your ViewController to created Storyboard Reference
 		* open Utilities > Atributes inspector
 		* name this segue as ```GET_FILES``` in Identifier field
+		* set Kind as ```Modal```
 		
 	* add ```TabbarFileSelector.storyboard``` file into your project Bundle Resources
 		* Build Phases > Copy Bundle Resources > add your ```TabbarFileSelector``` storyboard using the icon "+"
@@ -138,6 +139,7 @@ Please follow this guide to install File Selector module in your existed or new 
 
 * Use file selector 
 	* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
+	
 	* specify UI segue name constant
 		```
 		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
@@ -160,6 +162,23 @@ Please follow this guide to install File Selector module in your existed or new 
 		```
 		
 		note: this code will work only if you already set up the reference to TabbarFileSelector.storyboard in your storyboard
+		
+	* example of ```getFiles``` method
+		```
+		- (void)getFiles:(UIButton *)sender {	
+			[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
+				dispatch_async(kMainQueue, ^{
+					if (success) {
+						// redirect user to view with tab bar with related files displayed (with subcategories)
+						[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
+					
+					} else {
+						[self showAlertWithMessage:@"Can't load files"];
+					}
+				});
+			}];
+		}
+		```
 		
 	* selected file will already appear as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
 	
