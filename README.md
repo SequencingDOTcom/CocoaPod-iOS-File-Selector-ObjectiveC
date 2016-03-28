@@ -166,23 +166,24 @@ Please follow this guide to install File Selector module in your existed or new 
 	[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
 	```
 	
-* when user selects any file and clics on "Continue" button in UI - selected file appears as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+* when user selects any file and clics on "Continue" button in UI - ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol then.
+	Selected file will be passed on as a parameter. In this method you can handle selected file
 	
 * each file is a NSDictionary object with following keys and values format:
 	
-key name | type | description
-------------- | ------------- | ------------- 
-DateAdded | String | date file was added
-Ext | String | file extension
-FileCategory | String | file category: Community, Uploaded, FromApps, Altruist
-FileSubType | String | file subtype
-FileType | String | file type
-FriendlyDesc1 | String | person name for sample files
-FriendlyDesc2 | String | person description for sample files
-Id | String | file ID
-Name | String | file name
-Population | String | 
-Sex | String |	the sex
+	key name | type | description
+	------------- | ------------- | ------------- 
+	DateAdded | String | date file was added
+	Ext | String | file extension
+	FileCategory | String | file category: Community, Uploaded, FromApps, Altruist
+	FileSubType | String | file subtype
+	FileType | String | file type
+	FriendlyDesc1 | String | person name for sample files
+	FriendlyDesc2 | String | person description for sample files
+	Id | String | file ID
+	Name | String | file name
+	Population | String | 
+	Sex | String |	the sex
 
 
 ### Step 6: Examples 
@@ -191,13 +192,16 @@ Sex | String |	the sex
 
 	![my files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_myFiles.png)
 
+
 * example of ```Sample Files```
 
 	![sample files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_sampleFiles.png)
+
 	
 * example of selected file
 
 	![selected file](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_selectedFile.png)
+
 	
 * example of ```Select File``` button
 	```
@@ -243,6 +247,14 @@ Sex | String |	the sex
 				}
 			});
 		}];
+	}
+	```
+
+* example of ```handleFileSelected``` method
+
+	```
+	- (void)handleFileSelected:(NSDictionary *)file {
+		NSLog(@"handleFileSelected: %@", file);
 	}
 	```
 
