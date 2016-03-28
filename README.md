@@ -57,37 +57,37 @@ Please follow this guide to install File Selector module in your existed or new 
 
 ### Step 1: Install oAuth module and File Selector modules
 
-	* see general CocoaPods instruction 
-		```
-		https://cocoapods.org > getting started
-		```
+* see general CocoaPods instruction 
+	```
+	https://cocoapods.org > getting started
+	```
 		
-	* oAuth CocoaPod plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+* oAuth CocoaPod plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+
+* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only. Thus you need 2 modules to be installed: ```oAuth``` module and ```File Selector``` module 
+
+* create a new project in Xcode
 	
-	* File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only. Thus you need 2 modules to be installed: ```oAuth``` module and ```File Selector``` module 
-	
-	* create a new project in Xcode
-	
-	* create Podfile in your project directory: 
-		```
-		$ pod init
-		```
+* create Podfile in your project directory: 
+	```
+	$ pod init
+	```
 		
-	* specify following parameters in Podfile: 
-		```
-		pod 'sequencing-oauth-api-objc', '~> 1.0.3'
-		pod 'sequencing-file-selector-api-objc', '~> 1.0.5'
-		```		
+* specify following parameters in Podfile: 
+	```
+	pod 'sequencing-oauth-api-objc', '~> 1.0.3'
+	pod 'sequencing-file-selector-api-objc', '~> 1.0.5'
+	```		
 		
-	* install the dependency in your project: 
-		```
-		$ pod install
-		```
+* install the dependency in your project: 
+	```
+	$ pod install
+	```
 		
-	* always open the Xcode workspace instead of the project file: 
-		```
-		$ open *.xcworkspace
-		```
+* always open the Xcode workspace instead of the project file: 
+	```
+	$ open *.xcworkspace
+	```
 
 
 ### Step 2: Set up OAuth module
