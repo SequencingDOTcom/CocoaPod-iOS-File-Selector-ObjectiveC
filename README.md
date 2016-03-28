@@ -92,155 +92,159 @@ Please follow this guide to install File Selector module in your existed or new 
 
 ### Step 2: Set up OAuth module
 
-	* oAuth CocoaPod plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+* oAuth CocoaPod plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
 
 
 ### Step 3: Set up file selector UI
 
-	* add "Storyboard Reference" in your Main.storyboard
-		* select added Storyboard Reference
-		* open Utilities > Atributes inspector
-		* select ```TabbarFileSelector``` in Storyboard dropdown
+* add "Storyboard Reference" in your Main.storyboard
+	* select added Storyboard Reference
+	* open Utilities > Atributes inspector
+	* select ```TabbarFileSelector``` in Storyboard dropdown
 		
-	* add segue from your ViewController to created Storyboard Reference
-		* open Utilities > Atributes inspector
-		* name this segue as ```GET_FILES``` in Identifier field
-		* set Kind as ```Modal```
+* add segue from your ViewController to created Storyboard Reference
+	* open Utilities > Atributes inspector
+	* name this segue as ```GET_FILES``` in Identifier field
+	* set Kind as ```Modal```
 		
-	* add ```TabbarFileSelector.storyboard``` file into your project Bundle Resources
-		* Build Phases > Copy Bundle Resources > add your ```TabbarFileSelector``` storyboard using the icon "+"
+* add ```TabbarFileSelector.storyboard``` file into your project Bundle Resources
+	* Build Phases > Copy Bundle Resources > add your ```TabbarFileSelector``` storyboard using the icon "+"
 
 
 ### Step 4: Subscribe for file selector protocol
 
-	* add file selector protocol import in your class were you getting and handling file selector:
-		```
-		#import "SQFileSelectorProtocol.h"
-		```	
+* add file selector protocol import in your class were you getting and handling file selector:
+	```
+	#import "SQFileSelectorProtocol.h"
+	```	
 		
-	* subscribe your class to file selector protocol: 
-		```
-		<SQFileSelectorProtocol>
-		```
+* subscribe your class to file selector protocol: 
+	```
+	<SQFileSelectorProtocol>
+	```
 		
-	* add import: 
-		```
-		#import "SQFilesAPI.h"
-		```
+* add import: 
+	```
+	#import "SQFilesAPI.h"
+	```
 		
-	* subscribe your class as handler/delegate for selected file in file selector: 
-		```
-		[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];
-		```
+* subscribe your class as handler/delegate for selected file in file selector: 
+	```
+	[[SQFilesAPI sharedInstance] setFileSelectedHandler:self];
+	```
 		
-	* implement "handleFileSelected" method from protocol
-		```
-		- (void)handleFileSelected:(NSDictionary *)file {
-			// your code here
-		}
-		```
+* implement "handleFileSelected" method from protocol
+	```
+	- (void)handleFileSelected:(NSDictionary *)file {
+		// your code here
+	}
+	```
 
 
 ### Step 5: Use file selector 
 
-	* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
+* set up some button for getting/viewing files for logged in user, and specify delegate method for this button
 	
-	* specify segue ID constant
-		```
-		static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
-		```	
+* specify segue ID constant
+	```
+	static NSString *const FILES_CONTROLLER_SEGUE_ID = @"GET_FILES";
+	```	
 		
-	* you can load/get files, list of my files and list of sample files, via ```withToken: loadFiles:``` method (via ```SQFilesAPI``` class with shared instance init access).
+* you can load/get files, list of my files and list of sample files, via ```withToken: loadFiles:``` method (via ```SQFilesAPI``` class with shared instance init access).
 	
-		pay attention, you need to pass on the String value of ```token.accessToken``` object as a parameter for this method:
-		```
-		[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
-			// your code here
-		}];
-		```
+	pay attention, you need to pass on the String value of ```token.accessToken``` object as a parameter for this method:
+	```
+	[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
+		// your code here
+	}];
+	```
 		
-		```withToken: loadFiles:``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
+	```withToken: loadFiles:``` method will return a BOOL value with YES if files were successfully loaded or NO if there were any problem. You need to manage this in your code
 		
-	* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
-		```
-		[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
-		```
+* if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
+	```
+	[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
+	```
 	
-	* when user selects any file and clics on "Continue" button in UI - selected file appears as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
+* when user selects any file and clics on "Continue" button in UI - selected file appears as a parameter in ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol. In this method you can handle selected file
 	
-	* each file is a NSDictionary object with following keys and values format:
+* each file is a NSDictionary object with following keys and values format:
 	
-	key name | type | description
-	------------- | ------------- | ------------- 
-	DateAdded | String | date file was added
-	Ext | String | file extension
-	FileCategory | String | file category: Community, Uploaded, FromApps, Altruist
-	FileSubType | String | file subtype
-	FileType | String | file type
-	FriendlyDesc1 | String | person name for sample files
-	FriendlyDesc2 | String | person description for sample files
-	Id | String | file ID
-	Name | String | file name
-	Population | String | 
-	Sex | String |	the sex
+key name | type | description
+------------- | ------------- | ------------- 
+DateAdded | String | date file was added
+Ext | String | file extension
+FileCategory | String | file category: Community, Uploaded, FromApps, Altruist
+FileSubType | String | file subtype
+FileType | String | file type
+FriendlyDesc1 | String | person name for sample files
+FriendlyDesc2 | String | person description for sample files
+Id | String | file ID
+Name | String | file name
+Population | String | 
+Sex | String |	the sex
 
 
 ### Step 6: Examples 
 
-	* example of ```My Files```
-	
-	* example of ```Sample Files```
-	
-	* example of selected file
-	
-	
-	* example of ```Select File``` button
-		```
-		// set up select file button
-    	UIButton *selectFileButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    	[selectFileButton setTitle:@"Select file" forState:UIControlStateNormal];
-    	[selectFileButton addTarget:self action:@selector(getFiles:) forControlEvents:UIControlEventTouchUpInside];
-    	[selectFileButton sizeToFit];
-    	[selectFileButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    	[self.view addSubview:selectFileButton];
-    
-    	// adding constraints for select file
-    	NSLayoutConstraint *xCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
-    															attribute:NSLayoutAttributeCenterX
-    															relatedBy:NSLayoutRelationEqual
-    															toItem:self.view
-    															attribute:NSLayoutAttributeCenterX
-    															multiplier:1
-    															constant:0];
-    															
-    	NSLayoutConstraint *yCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
-    															attribute:NSLayoutAttributeCenterY
-    															relatedBy:NSLayoutRelationEqual
-    															toItem:self.view
-    															attribute:NSLayoutAttributeCenterY
-    															multiplier:1
-    															constant:0];
-    	[self.view addConstraint:xCenter];
-    	[self.view addConstraint:yCenter];
-		```
-	
-	* example of ```getFiles``` method
-		```
-		- (void)getFiles:(UIButton *)sender {	
-			[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
-				dispatch_async(kMainQueue, ^{
-					if (success) {
-						// redirect user to view with tab bar with related files displayed (with subcategories)
-						[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
-					
-					} else {
-						[self showAlertWithMessage:@"Can't load files"];
-					}
-				});
-			}];
-		}
-		```
+* example of ```My Files```
 
+	![my files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_myFiles.png)
+
+* example of ```Sample Files```
+
+	![sample files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_sampleFiles.png)
+	
+* example of selected file
+
+	![selected file](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_selectedFile.png)
+	
+* example of ```Select File``` button
+	```
+	// set up select file button
+   	UIButton *selectFileButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+   	[selectFileButton setTitle:@"Select file" forState:UIControlStateNormal];
+   	[selectFileButton addTarget:self action:@selector(getFiles:) forControlEvents:UIControlEventTouchUpInside];
+   	[selectFileButton sizeToFit];
+   	[selectFileButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+   	[self.view addSubview:selectFileButton];
+   
+   	// adding constraints for select file
+   	NSLayoutConstraint *xCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
+   															attribute:NSLayoutAttributeCenterX
+   															relatedBy:NSLayoutRelationEqual
+   															toItem:self.view
+   															attribute:NSLayoutAttributeCenterX
+   															multiplier:1
+   															constant:0];
+    															
+   	NSLayoutConstraint *yCenter = [NSLayoutConstraint constraintWithItem:selectFileButton
+   															attribute:NSLayoutAttributeCenterY
+   															relatedBy:NSLayoutRelationEqual
+   															toItem:self.view
+   															attribute:NSLayoutAttributeCenterY
+   															multiplier:1
+   															constant:0];
+   	[self.view addConstraint:xCenter];
+   	[self.view addConstraint:yCenter];
+	```
+	
+* example of ```getFiles``` method
+	```
+	- (void)getFiles:(UIButton *)sender {	
+		[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
+			dispatch_async(kMainQueue, ^{
+				if (success) {
+					// redirect user to view with tab bar with related files displayed (with subcategories)
+					[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
+				
+				} else {
+					[self showAlertWithMessage:@"Can't load files"];
+				}
+			});
+		}];
+	}
+	```
 
 
 
