@@ -9,7 +9,7 @@
 @interface SQFilesAPI : NSObject
 
 // instance for protocol delegate
-@property (strong, nonatomic) id <SQFileSelectorProtocol> fileSelectedHandler;
+@property (nonatomic) id <SQFileSelectorProtocol> fileSelectedHandler;
 
 // designated initializer
 + (instancetype)sharedInstance;

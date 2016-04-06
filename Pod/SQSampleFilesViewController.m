@@ -39,6 +39,9 @@
 
 @implementation SQSampleFilesViewController
 
+#pragma mark -
+#pragma mark View Lyfecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -89,7 +92,7 @@
                                                                    style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(backButtonPressed)];
-    [self.navigationItem setLeftBarButtonItem:backButton animated:YES];
+    [self.navigationItem setLeftBarButtonItem:backButton animated:NO];
     
     
     // prepare tableView
@@ -147,6 +150,7 @@
         [[[[self.tabBarController tabBar]items]objectAtIndex:0]setEnabled:FALSE];
     }
 }
+
 
 
 #pragma mark -
@@ -208,14 +212,14 @@
 }
 
 
+// Continue button selected
 - (void)fileIsSelected {
     NSDictionary *selectedFile = [[NSDictionary alloc] init];
     selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
     
     [[[SQFilesAPI sharedInstance] fileSelectedHandler] handleFileSelected:selectedFile];
-    
-    [self backButtonPressed];
 }
+
 
 
 #pragma mark -
@@ -225,11 +229,9 @@
     return [self.filesArray count];
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [(self.filesHeightsArray)[indexPath.row] floatValue];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"cell";
@@ -247,13 +249,13 @@
 }
 
 
+
 #pragma mark -
 #pragma mark Cells selection
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     return 3;
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.nowSelectedFileIndexPath == nil) {
@@ -273,6 +275,7 @@
 }
 
 
+
 #pragma mark -
 #pragma mark Navigation
 
@@ -286,9 +289,8 @@
  [self performSegueWithIdentifier:@"SHOW_FILE_DETAILS" sender:nil];
  } */
 
-
+/*
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)indexPath {
-    /*
      NSDictionary *selectedFile = [[NSDictionary alloc] init];
      SQSectionInfo *sectionInfo = (self.sampleSectionInfoArray)[self.nowSelectedFileIndexPath.section];
      selectedFile = [sectionInfo.filesArray objectAtIndex:self.nowSelectedFileIndexPath.row];
@@ -296,8 +298,8 @@
      if ([segue.destinationViewController isKindOfClass:[DetailsViewController class]]) {
      [[segue destinationViewController] setNowSelectedFile:selectedFile];
      }
-     */
-}
+} */
+
 
 
 #pragma mark -
@@ -346,29 +348,18 @@
     [self presentViewController:popoverContentController animated:YES completion:nil];
 }
 
-
 - (void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController {
     popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
 }
-
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
     return UIModalPresentationNone;
 }
 
 
+
 #pragma mark -
-#pragma mark Alert message
-
-- (void)showAlertWithMessage:(NSString *)message {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *close = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
-    [alert addAction:close];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
+#pragma mark Other Methods
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

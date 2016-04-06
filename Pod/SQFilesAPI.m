@@ -13,7 +13,7 @@
 @interface SQFilesAPI()
 
 // token property
-@property (readwrite, strong, nonatomic) NSString *accessToken;
+@property (readwrite, nonatomic) NSString *accessToken;
 
 @end
 

@@ -34,7 +34,7 @@
                                   attributes:attributes
                                      context:nil];
     
-    return CGRectGetHeight(rect) + 50;
+    return CGRectGetHeight(rect) + 40;
 }
 
 - (void)viewDidLoad {
