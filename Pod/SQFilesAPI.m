@@ -64,7 +64,11 @@
     [[SQFilesServerManager sharedInstance] getForFilesWithToken:self.accessToken onSuccess:^(NSArray *filesList) {
         if (filesList) {
             files(filesList);
+            
+        } else {
+            files(nil);
         }
+        
     } onFailure:^(NSError *error) {
         NSLog(@"Error: %@", [error localizedDescription]);
         files(nil);

@@ -8,7 +8,9 @@
 @protocol SQFileSelectorProtocol <NSObject>
 
 @required
-
 - (void)handleFileSelected:(NSDictionary *)file;
+
+@optional
+- (void)backButtonPressed;
 
 @end

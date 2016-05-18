@@ -39,22 +39,37 @@ static NSString *filesPath      = @"/DataSourceList?all=true";
                                  andAuthScope:@"Bearer"
                                 andParameters:nil
                                    andHandler:^(NSString* responseText, NSURLResponse* response, NSError* error) {
+                                       
                                        if (response) {
-                                           NSError *jsonError;
-                                           NSData *jsonData = [responseText dataUsingEncoding:NSUTF8StringEncoding];
-                                           NSArray *parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                                                   options:0
-                                                                                                     error:&jsonError];
-                                           if (jsonError != nil) {
-                                               NSLog(@"Error: %@", jsonError);
+                                           
+                                           if ([[responseText lowercaseString] rangeOfString:@"exception"].location != NSNotFound ||
+                                               [[responseText lowercaseString] rangeOfString:@"invalid"].location != NSNotFound ||
+                                               [[responseText lowercaseString] rangeOfString:@"error"].location != NSNotFound) {
+                                               
+                                               NSLog(@"Error: %@", responseText);
                                                if (success) {
                                                    success(nil);
                                                }
+                                               
                                            } else {
-                                               if (success) {
-                                                   success(parsedObject);
+                                               
+                                               NSError *jsonError;
+                                               NSData *jsonData = [responseText dataUsingEncoding:NSUTF8StringEncoding];
+                                               NSArray *parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                                                       options:0
+                                                                                                         error:&jsonError];
+                                               if (jsonError != nil) {
+                                                   NSLog(@"Error: %@", jsonError);
+                                                   if (success) {
+                                                       success(nil);
+                                                   }
+                                               } else {
+                                                   if (success) {
+                                                       success(parsedObject);
+                                                   }
                                                }
                                            }
+                                           
                                        } else if (failure) {
                                            failure(error);
                                        }

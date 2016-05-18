@@ -34,7 +34,7 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 
 + (void)parseFilesMainArray:(NSArray *)filesMainArray
                 withHandler:(FilesCallback)callback {
-
+    
     // For each category/section, set up a corresponding SectionInfo object to contain the category name, list of files and height for each row.
     NSMutableArray *sampleInfoArray = [[NSMutableArray alloc] init];    // array for section info for sample files
     NSMutableArray *myInfoArray     = [[NSMutableArray alloc] init];    // array for section info for my files
@@ -74,11 +74,11 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
             case 1: {   // Uploaded Files Category
                 [self addFile:tempFile intoSection:sectionUploaded];
             } break;
-            
+                
             case 2: {   // Shared Files Category
                 [self addFile:tempFile intoSection:sectionShared];
             } break;
-            
+                
             case 3: {   // From Apps Files Category
                 [self addFile:tempFile intoSection:sectionFromApps];
             } break;
@@ -181,8 +181,8 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 
 + (CGFloat)heightForRowSampleFile:(NSAttributedString *)text {
     CGRect rect = [text boundingRectWithSize:CGSizeMake(260, CGFLOAT_MAX)
-                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                        context:nil];
+                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     context:nil];
     if (CGRectGetHeight(rect) < 40.f) {
         return 44.0f;
     } else {
@@ -232,6 +232,113 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
     }
     
     return preparedText;
+}
+
+
+
++ (NSDictionary *)searchForFileID:(NSString *)fileID inMyFilesSectionsArray:(NSArray *)sectionsArray {
+    
+    NSNumber *sectionIndexNumber;
+    NSNumber *fileIndexNumber;
+    
+    SQSectionInfo *section;
+    
+    // search among sections
+    for (int arrayIndex = 0; arrayIndex < [sectionsArray count]; arrayIndex++) {
+        section = (sectionsArray)[arrayIndex];
+        NSArray *arrayWithFilesFromSection = section.filesArray;
+        
+        // search files in section
+        for (int fileIndex = 0; fileIndex < [arrayWithFilesFromSection count]; fileIndex++) {
+            
+            NSDictionary *file = [arrayWithFilesFromSection objectAtIndex:fileIndex];
+            NSString *fileIDFromSection = [file objectForKey:@"Id"];
+            
+            if ([fileIDFromSection isEqualToString:fileID]) {
+                fileIndexNumber = [NSNumber numberWithInteger:fileIndex];
+                break;
+            }
+        }
+        
+        if (fileIndexNumber) {
+            sectionIndexNumber = [NSNumber numberWithInteger:arrayIndex];
+            break;
+        }
+    }
+    
+    if (sectionIndexNumber && fileIndexNumber) {
+        NSDictionary *indexesDict = @{@"sectionIndex":  sectionIndexNumber,
+                                      @"fileIndex":     fileIndexNumber};
+        return indexesDict;
+    } else {
+        return nil;
+    }
+}
+
+
+
++ (NSDictionary *)searchForFileID:(NSString *)fileID inSampleFilesSectionsArray:(NSArray *)sectionsArray {
+    
+    NSNumber *sectionIndexNumber;
+    NSNumber *fileIndexNumber;
+    
+    SQSectionInfo *section = (sectionsArray)[0];
+    NSArray *arrayWithFilesFromSection = section.filesArray;
+    
+    // search files in section
+    for (int fileIndex = 0; fileIndex < [arrayWithFilesFromSection count]; fileIndex++) {
+        
+        NSDictionary *file = [arrayWithFilesFromSection objectAtIndex:fileIndex];
+        NSString *fileIDFromSection = [file objectForKey:@"Id"];
+        
+        if ([fileIDFromSection isEqualToString:fileID]) {
+            fileIndexNumber = [NSNumber numberWithInteger:fileIndex];
+            break;
+        }
+    }
+    
+    if (fileIndexNumber) {
+        sectionIndexNumber = [NSNumber numberWithInteger:0];
+    }
+    
+    if (sectionIndexNumber && fileIndexNumber) {
+        NSDictionary *indexesDict = @{@"sectionIndex":  sectionIndexNumber,
+                                      @"fileIndex":     fileIndexNumber};
+        return indexesDict;
+    } else {
+        return nil;
+    }
+}
+
+
+
++ (NSNumber *)checkIfSelectedFileID:(NSString *)fileID isPresentInSection:(NSInteger)sectionNumber forCategory:(NSString *)category {
+    
+    NSNumber *indexOfSelectedFile;
+    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
+    SQSectionInfo *section;
+    
+    if ([category containsString:@"sample"]) {
+        section = (filesContainer.sampleSectionsArray)[sectionNumber];
+        
+    } else {
+        section = (filesContainer.mySectionsArray)[sectionNumber];
+    }
+    
+    NSArray *arrayWithFilesFromSection = section.filesArray;
+    
+    for (int index = 0; index < [arrayWithFilesFromSection count]; index++) {
+        
+        NSDictionary *file = [arrayWithFilesFromSection objectAtIndex:index];
+        NSString *fileIDFromSection = [file objectForKey:@"Id"];
+        
+        if ([fileIDFromSection isEqualToString:fileID]) {
+            indexOfSelectedFile = [NSNumber numberWithInt:index];
+            break;
+        }
+    }
+    
+    return indexOfSelectedFile;
 }
 
 @end

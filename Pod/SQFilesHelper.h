@@ -16,7 +16,14 @@ typedef void (^FilesCallback)(NSMutableArray *mySectionsArray, NSMutableArray *s
 + (CGFloat)heightForRow:(NSString *)text;
 
 + (NSString *)prepareTextFromMyFile:(NSDictionary *)file;
+
 + (NSAttributedString *)prepareTextFromSampleFile:(NSDictionary *)file;
+
 + (NSString *)prepareText:(NSDictionary *)text;
+
++ (NSDictionary *)searchForFileID:(NSString *)fileID inMyFilesSectionsArray:(NSArray *)sectionsArray;
++ (NSDictionary *)searchForFileID:(NSString *)fileID inSampleFilesSectionsArray:(NSArray *)sectionsArray;
+    
++ (NSNumber *)checkIfSelectedFileID:(NSString *)fileID isPresentInSection:(NSInteger)sectionNumber forCategory:(NSString *)category;
 
 @end
