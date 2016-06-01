@@ -28,7 +28,7 @@
 
 // buttons
 @property (strong, nonatomic) UIBarButtonItem   *continueButton;
-@property (strong, nonatomic) UIBarButtonItem   *infoButton;
+// @property (strong, nonatomic) UIBarButtonItem   *infoButton;
 
 // file details / selection index
 @property (strong, nonatomic) NSIndexPath       *nowSelectedFileIndexPath;
@@ -71,11 +71,11 @@
     UITabBarItem *tabBarItem_SampleFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
     tabBarItem_SampleFiles.image = [UIImage imageNamed:@"icon_samplefiles"];
     
-    
+    /*
     // infoButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showInfoPopover) forControlEvents:UIControlEventTouchUpInside];
-    self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:button];*/
     
     
     // continueButton
@@ -87,7 +87,7 @@
     
     
     // rightBarButtonItems
-    NSArray *rightButtonsArray = [[NSArray alloc] initWithObjects:self.continueButton, self.infoButton, nil];
+    NSArray *rightButtonsArray = [[NSArray alloc] initWithObjects:self.continueButton, nil]; // self.infoButton,
     self.navigationItem.rightBarButtonItems = rightButtonsArray;
     
 
@@ -436,7 +436,7 @@
 } */
 
 
-
+/*
 #pragma mark -
 #pragma mark Popover
 
@@ -460,7 +460,7 @@
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
     return UIModalPresentationNone;
-}
+} */
 
 
 
