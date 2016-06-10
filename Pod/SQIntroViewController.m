@@ -16,7 +16,7 @@
 #define FILES_CONTROLLER_SEGUE_ID @"SHOW_FILES_SEGUE_ID"
 
 
-@interface SQIntroViewController () <UIGestureRecognizerDelegate>
+@interface SQIntroViewController () <UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate>
 
 // info button
 @property (strong, nonatomic) UIBarButtonItem *infoButton;
