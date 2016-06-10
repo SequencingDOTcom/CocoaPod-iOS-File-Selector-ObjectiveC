@@ -34,7 +34,7 @@
                                   attributes:attributes
                                      context:nil];
     
-    return CGRectGetHeight(rect) + 35;
+    return CGRectGetHeight(rect) + 180;
 }
 
 

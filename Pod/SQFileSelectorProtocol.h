@@ -11,6 +11,6 @@
 - (void)handleFileSelected:(NSDictionary *)file;
 
 @optional
-- (void)backButtonPressed;
+- (void)closeButtonPressed;
 
 @end

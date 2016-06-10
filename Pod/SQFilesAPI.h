@@ -10,8 +10,10 @@
 
 // instance for protocol delegate
 @property (nonatomic) id <SQFileSelectorProtocol> fileSelectedHandler;
-@property (nonatomic) BOOL backButton;
+
+@property (nonatomic) BOOL closeButton;
 @property (strong, nonatomic) NSString *selectedFileID;
+@property (strong, nonatomic) NSString *videoFileName;
 
 // designated initializer
 + (instancetype)sharedInstance;

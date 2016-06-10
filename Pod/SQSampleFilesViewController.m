@@ -91,14 +91,12 @@
     NSArray *rightButtonsArray = [[NSArray alloc] initWithObjects:self.continueButton, nil]; // self.infoButton,
     self.navigationItem.rightBarButtonItems = rightButtonsArray;
     
-    
-    if (filesAPI.backButton) {
-        // "Back" button
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                       style:UIBarButtonItemStyleDone
-                                                                      target:self
-                                                                      action:@selector(backButtonPressed)];
-        [self.navigationItem setLeftBarButtonItem:backButton animated:NO];
+    // closeButton
+    if (filesAPI.closeButton) {
+        UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                                                     target:self
+                                                                                     action:@selector(closeButtonPressed)];
+        [self.navigationItem setLeftBarButtonItem:closeButton animated:NO];
     }
     
     
@@ -258,14 +256,14 @@
 
 
 // Back button tapped
-- (void)backButtonPressed {
+- (void)closeButtonPressed {
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     
-    if ([filesAPI.fileSelectedHandler respondsToSelector:@selector(backButtonPressed)]) {
+    if ([filesAPI.fileSelectedHandler respondsToSelector:@selector(closeButtonPressed)]) {
         SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
         filesAPI.selectedFileID = nil;
         
-        [filesAPI.fileSelectedHandler backButtonPressed];
+        [filesAPI.fileSelectedHandler closeButtonPressed];
     }
 }
 
