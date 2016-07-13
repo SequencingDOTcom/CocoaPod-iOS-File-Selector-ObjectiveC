@@ -200,19 +200,24 @@ Please follow this guide to install File Selector module in your existed or new 
 
 ### Step 6: Examples 
 
-* example of ```My Files```
+* example of ```File Selector - Intro page```
 
-	![my files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_myFiles.png)
+	![intro page](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_introPage.png)
+
+
+* example of ```File Selector - My Files```
+
+	![my files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_myFiles2.png)
 
 
 * example of ```Sample Files```
 
-	![sample files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_sampleFiles.png)
+	![sample files](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_sampleFiles2.png)
 
 	
 * example of selected file
 
-	![selected file](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_selectedFile.png)
+	![selected file](https://github.com/SequencingDOTcom/CocoaPod-iOS-File-Selector-ObjectiveC/blob/master/Screenshots/fileSelector_sampleFiles2selected.png)
 
 	
 * example of ```Select File``` button
