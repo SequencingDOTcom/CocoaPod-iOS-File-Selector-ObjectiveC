@@ -75,8 +75,8 @@ Please follow this guide to install File Selector module in your existed or new 
 		
 * specify following parameters in Podfile: 
 	```
-	pod 'sequencing-oauth-api-objc', '~> 1.0.7'
-	pod 'sequencing-file-selector-api-objc', '~> 1.0.11'
+	pod 'sequencing-oauth-api-objc', '~> 1.0.8'
+	pod 'sequencing-file-selector-api-objc', '~> 1.0.12'
 	```		
 		
 * install the dependency in your project: 
@@ -140,6 +140,13 @@ Please follow this guide to install File Selector module in your existed or new 
 	}
 	```
 
+* implement optional "closeButtonPressed" method from protocol if needed
+	```
+	- (void)closeButtonPressed {
+	    // your code here
+	}
+	```
+
 
 ### Step 5: Use file selector 
 
@@ -164,6 +171,11 @@ Please follow this guide to install File Selector module in your existed or new 
 * if files were loaded successfully you can open/show File Selector now in UI. You can do it by calling file selector view via ```performSegueWithIdentifier``` method:
 	```
 	[self performSegueWithIdentifier:FILES_CONTROLLER_SEGUE_ID sender:@0];
+	```
+	
+	while opening File Selector in UI you can set `Close` button to be present if you need
+	```
+	[SQFilesAPI sharedInstance].closeButton = YES;
 	```
 	
 * when user selects any file and clics on "Continue" button in UI - ```handleFileSelected:``` method from ```SQFileSelectorProtocol``` protocol then.
@@ -233,7 +245,7 @@ Please follow this guide to install File Selector module in your existed or new 
    	[self.view addConstraint:yCenter];
 	```
 	
-* example of ```getFiles``` method
+* example of ```getFiles``` method via ```performSegueWithIdentifier``` method
 	```
 	- (void)getFiles:(UIButton *)sender {	
 		[[SQFilesAPI sharedInstance] withToken:self.token.accessToken loadFiles:^(BOOL success) {
@@ -250,11 +262,42 @@ Please follow this guide to install File Selector module in your existed or new 
 	}
 	```
 
-* example of ```handleFileSelected``` method
+* example of ```getFiles``` method via direct storyboard opening
+	```
+	- (void)getFiles:(UIButton *)sender {
+		SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
+        [filesAPI setFileSelectedHandler:self];
+        filesAPI.closeButton = YES;	
+		[filesAPI withToken:self.token.accessToken loadFiles:^(BOOL success) {
+			dispatch_async(kMainQueue, ^{
+				if (success) {
+					// open file selector view
+					UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TabbarFileSelector" bundle:nil];
+					UINavigationController *fileSelectorVC = (UINavigationController *)[storyboard instantiateInitialViewController];
+					fileSelectorVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+					[self presentViewController:fileSelectorVC animated:YES completion:nil];
+				
+				} else {
+					[self showAlertWithMessage:@"Can't load files"];
+				}
+			});
+		}];
+	}
+	```
 
+* example of ```handleFileSelected``` method
 	```
 	- (void)handleFileSelected:(NSDictionary *)file {
 		NSLog(@"handleFileSelected: %@", file);
+	}
+	```
+
+* example of ```closeButtonPressed``` method
+	```
+	- (void)closeButtonPressed {
+    	dispatch_async(kMainQueue, ^{
+        	[self dismissViewControllerAnimated:YES completion:nil];
+    	});
 	}
 	```
 

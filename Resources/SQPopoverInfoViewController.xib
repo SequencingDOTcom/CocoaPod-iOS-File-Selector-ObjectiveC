@@ -17,7 +17,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKs-Cu-Ifd">
                     <rect key="frame" x="10" y="10" width="580" height="585"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <mutableString key="text">This app uses Real-Time Personalization™ (RTP) technology to analyze your genes and the weather, together. You'll receive daily guidance that is genetically tailored to you. This guidance is your forecast for a healthier day!
+                    <string key="text">This app uses Real-Time Personalization™ (RTP) technology to analyze your genes and the weather, together. You'll receive daily guidance that is genetically tailored to you. This guidance is your forecast for a healthier day!
 
 RTP is as easy as 1, 2, 3...
 
@@ -29,7 +29,7 @@ Select "Sample Files" to use fun sample data.
 This app's Real-Time Personalization™ will be powered by the genetic data in the file you select.
 
 3) Press Continue.
-Weather My Way will analyze your genes and the weather each day.</mutableString>
+Weather My Way will analyze your genes and the weather each day.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>

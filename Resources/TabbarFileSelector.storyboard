@@ -175,7 +175,7 @@
                                                 <rect key="frame" x="20" y="20" width="460" height="85"/>
                                                 <string key="text">This app is powered by genetic data.
 
-Do you want this app to analyse genetic data from one of your files or a sample file?</string>
+Do you want this app to analyze genetic data from one of your files or a sample file?</string>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>

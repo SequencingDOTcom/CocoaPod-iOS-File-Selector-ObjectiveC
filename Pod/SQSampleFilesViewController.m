@@ -51,7 +51,7 @@
     
     // prepare navigation bar
     self.title = @"Sample Files";
-    [self.navigationItem setTitle:@"Select file"];
+    [self.navigationItem setTitle:@"Select a file"];
     
     
     // setup extended navbar images

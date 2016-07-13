@@ -51,19 +51,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // set navigation bar fully transpanent
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     UIColor *defaultTextColor = [UIColor blackColor];
     
     if ([filesAPI.videoFileName length] != 0) {
+        
+        // set navigation bar fully transpanent
+        [self.navigationController.navigationBar setTranslucent:YES];
+        [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+        
         defaultTextColor = [UIColor whiteColor];
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor blackColor];
         _introLabel.textColor = [UIColor whiteColor];
+        
     } else {
         _grayView.backgroundColor = [UIColor clearColor];
     }
