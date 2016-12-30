@@ -65,7 +65,7 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
                 if ([[tempFile allKeys] containsObject:@"Sex"]) {
                     
                     NSString *tempFileSex = [tempFile objectForKey:@"Sex"];
-                    if (tempFileSex != nil && tempFileSex != [NSNull null] && [tempFileSex length] > 0) {
+                    if (tempFileSex != nil && [tempFileSex length] > 0) {
                         
                         [self addFile:tempFile intoSection:sectionSampleAll];
                         if ([[tempFile objectForKey:@"Sex"] containsString:@"Male"]) {
