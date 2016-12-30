@@ -12,7 +12,7 @@
 @implementation SQPopoverInfoViewController
 
 + (CGFloat)heightForPopoverWidth:(CGFloat)width {
-    NSString *text = @"RTP = Real-Time Personalization™\nRTP is as easy as 1, 2, 3...\n\n1) Choose whether you want to use a sample file or your own file.\nIf you want to use your own file, you will be able to select from a list of files stored in your Sequencing.com account.\n\n2) Wait a moment for the list of files to appear and then select a file.\nThis app's Real-Time Personalization™ will then be powered by the genetic data in the file you select.\n\n3) Press continue.";
+    NSString *text = @"RTP = Real-Time Personalization®\nRTP is as easy as 1, 2, 3...\n\n1) Choose whether you want to use a sample file or your own file.\nIf you want to use your own file, you will be able to select from a list of files stored in your Sequencing.com account.\n\n2) Wait a moment for the list of files to appear and then select a file.\nThis app's Real-Time Personalization® will then be powered by the genetic data in the file you select.\n\n3) Press continue.";
     
     UIFont *font = [UIFont systemFontOfSize:14.f];
     

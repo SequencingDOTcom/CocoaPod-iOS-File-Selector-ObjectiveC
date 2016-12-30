@@ -62,12 +62,18 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
         
         switch (category) {
             case 0: {   // Sample Files Category
-                [self addFile:tempFile intoSection:sectionSampleAll];
-                
-                if ([[tempFile objectForKey:@"Sex"] containsString:@"Male"]) {
-                    [self addFile:tempFile intoSection:sectionSampleMen];
-                } else {
-                    [self addFile:tempFile intoSection:sectionSampleWomen];
+                if ([[tempFile allKeys] containsObject:@"Sex"]) {
+                    
+                    NSString *tempFileSex = [tempFile objectForKey:@"Sex"];
+                    if (tempFileSex != nil && tempFileSex != [NSNull null] && [tempFileSex length] > 0) {
+                        
+                        [self addFile:tempFile intoSection:sectionSampleAll];
+                        if ([[tempFile objectForKey:@"Sex"] containsString:@"Male"]) {
+                            [self addFile:tempFile intoSection:sectionSampleMen];
+                        } else {
+                            [self addFile:tempFile intoSection:sectionSampleWomen];
+                        }
+                    }
                 }
             } break;
                 
@@ -204,18 +210,20 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 
 
 + (NSAttributedString *)prepareTextFromSampleFile:(NSDictionary *)file {
-    // NSMutableString *preparedText = [[NSMutableString alloc] init];
-    
     NSString *friendlyDesk1 = [file objectForKey:@"FriendlyDesc1"];
     NSString *friendlyDesk2 = [file objectForKey:@"FriendlyDesc2"];
     
     NSString *tempString = [NSString stringWithFormat:@"%@\n%@", friendlyDesk1, friendlyDesk2];
     NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:tempString];
     
-    [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.f] range:NSMakeRange(0, [friendlyDesk1 length])];
-    [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:10.f] range:NSMakeRange([friendlyDesk1 length] + 1, [friendlyDesk2 length])];
+    NSRange fileTitle    = NSMakeRange(0, [friendlyDesk1 length] - 1);
+    NSRange fileSubTitle = NSMakeRange([friendlyDesk1 length] + 1, [friendlyDesk2 length]);
     
-    // [preparedText appendString:attString];
+    if (fileTitle.location != NSNotFound)
+        [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.f] range:fileTitle];
+    if (fileSubTitle.location != NSNotFound)
+        [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:10.f] range:fileSubTitle];
+    
     return [attString copy];
 }
 
