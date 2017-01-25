@@ -57,21 +57,29 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
     for (int i = 0; i < [filesMainArray count]; i++) {
         
         NSDictionary *tempFile = [filesMainArray objectAtIndex:i];
+        id tempFileID = tempFile;
         NSString *tempCategoryName = [tempFile objectForKey:@"FileCategory"];
         int category = (int)[categories indexOfObject:tempCategoryName];
         
         switch (category) {
             case 0: {   // Sample Files Category
-                if ([[tempFile allKeys] containsObject:@"Sex"]) {
-                    
-                    NSString *tempFileSex = [tempFile objectForKey:@"Sex"];
-                    if (tempFileSex != nil && [tempFileSex length] > 0) {
+                NSArray *tempFileAllKeys = [tempFile allKeys];
+                if (tempFileAllKeys != nil) {
+                    if ([tempFileAllKeys containsObject:@"Sex"]) {
                         
-                        [self addFile:tempFile intoSection:sectionSampleAll];
-                        if ([[tempFile objectForKey:@"Sex"] containsString:@"Male"]) {
-                            [self addFile:tempFile intoSection:sectionSampleMen];
-                        } else {
-                            [self addFile:tempFile intoSection:sectionSampleWomen];
+                        NSString *tempFileSex = [tempFile objectForKey:@"Sex"];
+                        id tempFileSexID = tempFileSex;
+                        
+                        if (tempFileSex != nil && tempFileSexID != [NSNull null] &&
+                            tempFile != nil && tempFileID != [NSNull null]) {
+                            
+                            [self addFile:tempFile intoSection:sectionSampleAll];
+                            if ([tempFileSex containsString:@"Male"]) {
+                                [self addFile:tempFile intoSection:sectionSampleMen];
+                                
+                            } else {
+                                [self addFile:tempFile intoSection:sectionSampleWomen];
+                            }
                         }
                     }
                 }
