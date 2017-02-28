@@ -218,22 +218,80 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 
 
 + (NSAttributedString *)prepareTextFromSampleFile:(NSDictionary *)file {
-    NSString *friendlyDesk1 = [file objectForKey:@"FriendlyDesc1"];
-    NSString *friendlyDesk2 = [file objectForKey:@"FriendlyDesc2"];
+    NSString *friendlyDesk1;
+    NSString *friendlyDesk2;
+    NSString *tempString;
+    NSMutableAttributedString *attString;
     
-    NSString *tempString = [NSString stringWithFormat:@"%@\n%@", friendlyDesk1, friendlyDesk2];
-    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:tempString];
+    NSString *friendlyDesk1Temp = [self prepareDesc1String:file];
+    NSString *friendlyDesk2Temp = [self prepareDesc2String:file];
     
-    NSRange fileTitle    = NSMakeRange(0, [friendlyDesk1 length] - 1);
-    NSRange fileSubTitle = NSMakeRange([friendlyDesk1 length] + 1, [friendlyDesk2 length]);
+    if ([friendlyDesk1Temp length] == 0)
+        friendlyDesk1 = @"noname";
+    else
+        friendlyDesk1 = friendlyDesk1Temp;
     
-    if (fileTitle.location != NSNotFound)
-        [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.f] range:fileTitle];
-    if (fileSubTitle.location != NSNotFound)
-        [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:10.f] range:fileSubTitle];
-    
+    if ([friendlyDesk2Temp length] > 0) {
+        friendlyDesk2 = friendlyDesk2Temp;
+        tempString = [NSString stringWithFormat:@"%@\n%@", friendlyDesk1, friendlyDesk2];
+        attString = [[NSMutableAttributedString alloc] initWithString:tempString];
+        
+        NSRange fileTitle    = NSMakeRange(0, [friendlyDesk1 length] - 1);
+        NSRange fileSubTitle = NSMakeRange([friendlyDesk1 length] + 1, [friendlyDesk2 length]);
+        
+        if (fileTitle.location != NSNotFound)
+            [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.f] range:fileTitle];
+        if (fileSubTitle.location != NSNotFound)
+            [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:10.f] range:fileSubTitle];
+        
+    } else {
+        tempString = [NSString stringWithFormat:@"%@", friendlyDesk1];
+        attString = [[NSMutableAttributedString alloc] initWithString:tempString];
+        
+        NSRange fileTitle    = NSMakeRange(0, [friendlyDesk1 length] - 1);
+        
+        if (fileTitle.location != NSNotFound)
+            [attString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.f] range:fileTitle];
+    }
     return [attString copy];
 }
+
+
++ (NSString *)prepareDesc1String:(NSDictionary *)file {
+    NSString *tempString;
+    
+    if ([[file allKeys] containsObject:@"FriendlyDesc1"]) {
+        id desc1 = [file objectForKey:@"FriendlyDesc1"];
+        
+        if (desc1 != [NSNull null] && desc1 != nil) {
+            NSString *desc1String = [NSString stringWithFormat:@"%@", desc1];
+            
+            if ([desc1String length] > 0) {
+                tempString = desc1String;
+            }
+        }
+    }
+    return tempString;
+}
+
+
++ (NSString *)prepareDesc2String:(NSDictionary *)file {
+    NSString *tempString;
+    
+    if ([[file allKeys] containsObject:@"FriendlyDesc2"]) {
+        id desc2 = [file objectForKey:@"FriendlyDesc2"];
+        
+        if (desc2 != [NSNull null] && desc2 != nil) {
+            NSString *desc2String = [NSString stringWithFormat:@"%@", desc2];
+            
+            if ([desc2String length] > 0) {
+                tempString = desc2String;
+            }
+        }
+    }
+    return tempString;
+}
+
 
 
 + (NSString *)prepareText:(NSDictionary *)demoText {
