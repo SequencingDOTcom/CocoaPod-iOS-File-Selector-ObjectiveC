@@ -6,12 +6,13 @@
 #import <Foundation/Foundation.h>
 #import "SQFileSelectorProtocol.h"
 
+
 @interface SQFilesAPI : NSObject
 
 // instance for protocol delegate
-@property (nonatomic) id <SQFileSelectorProtocol> fileSelectedHandler;
-
+@property (nonatomic) id <SQFileSelectorProtocol> delegate;
 @property (nonatomic) BOOL closeButton;
+
 @property (strong, nonatomic) NSString *selectedFileID;
 @property (strong, nonatomic) NSString *videoFileName;
 
@@ -19,14 +20,10 @@
 + (instancetype)sharedInstance;
 
 
-// load all files in one method
-- (void)withToken:(NSString *)accessToken loadFiles:(void(^)(BOOL success))success;
+- (void)loadFilesWithToken:(NSString *)accessToken
+               closeButton:(BOOL)closeButton
+      selectedFileDelegate:(id <SQFileSelectorProtocol>)delegate
+                    result:(void(^)(BOOL success))success;
 
-
-// load own files method
-// - (void)loadOwnFiles:(void(^)(NSArray *myFiles))files;
-
-// load sample files method
-// - (void)loadSampleFiles:(void(^)(NSArray *sampleFiles))files;
 
 @end

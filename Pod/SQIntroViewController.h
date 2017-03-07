@@ -1,10 +1,8 @@
 //
 //  SQIntroViewController.h
-//  Pods
+//  Copyright © 2017 Sequencing.com. All rights reserved
 //
-//  Created by Bogdan Laukhin on 6/1/16.
-//
-//
+
 
 #import <UIKit/UIKit.h>
 

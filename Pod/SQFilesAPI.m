@@ -10,12 +10,15 @@
 
 #define kMainQueue dispatch_get_main_queue()
 
+
+
 @interface SQFilesAPI()
 
-// token property
 @property (readwrite, nonatomic) NSString *accessToken;
 
 @end
+
+
 
 @implementation SQFilesAPI
 
@@ -29,20 +32,19 @@
 }
 
 
-#pragma mark -
-#pragma mark API methods
-/*
-- (void)instance:(id<SQFileSelectorProtocol>)fileSelectedHandler loadFiles:(void (^)(BOOL))success {
-    self.fileSelectedHandler = fileSelectedHandler;
-    [self loadFiles:success];
-} */
+#pragma mark - API methods
 
-
-- (void)withToken:(NSString *)accessToken loadFiles:(void(^)(BOOL success))success {
+- (void)loadFilesWithToken:(NSString *)accessToken
+               closeButton:(BOOL)closeButton
+      selectedFileDelegate:(id <SQFileSelectorProtocol>)delegate
+                    result:(void(^)(BOOL success))success {
+    
+    self.delegate = delegate;
+    self.closeButton = closeButton;
+    self.accessToken = accessToken;
+    
     // send request to server to get files assigned to account
     // and then parse these files into categories and subcategories
-    self.accessToken = [accessToken copy];
-    
     [self loadFilesFromServer:^(NSArray *files) {
         if (files) {
             [SQFilesHelper parseFilesMainArray:files withHandler:^(NSMutableArray *mySectionsArray, NSMutableArray *sampleSectionsArray) {
@@ -53,11 +55,11 @@
                     success(YES);
                 });
             }];
-        } else {
+        } else
             success(NO);
-        }
     }];
 }
+
 
 
 - (void)loadFilesFromServer:(void (^)(NSArray *files))files {
@@ -75,31 +77,6 @@
     }];
 }
 
-
-/*
-- (void)loadOwnFiles:(void (^)(NSArray *))files {
-    [[SQServerManager sharedInstance] getForOwnFilesWithToken:[[SQAuthResult sharedInstance] token] onSuccess:^(NSArray *ownFilesList) {
-        if (ownFilesList) {
-            files(ownFilesList);
-        }
-    } onFailure:^(NSError *error) {
-        NSLog(@"Error: %@", [error localizedDescription]);
-        files(nil);
-    }];
-} */
-
-
-/*
-- (void)loadSampleFiles:(void (^)(NSArray *))files {
-    [[SQServerManager sharedInstance] getForSampleFilesWithToken:[[SQAuthResult sharedInstance] token] onSuccess:^(NSArray *sampleFilesList) {
-        if (sampleFilesList) {
-            files(sampleFilesList);
-        }
-    } onFailure:^(NSError *error) {
-        NSLog(@"Error: %@", [error localizedDescription]);
-        files(nil);
-    }];
-} */
 
 
 @end

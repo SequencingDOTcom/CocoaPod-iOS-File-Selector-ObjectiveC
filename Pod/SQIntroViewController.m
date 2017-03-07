@@ -1,10 +1,8 @@
 //
 //  SQIntroViewController.m
-//  Pods
+//  Copyright © 2017 Sequencing.com. All rights reserved
 //
-//  Created by Bogdan Laukhin on 6/1/16.
-//
-//
+
 
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -131,9 +129,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
-    
-    if ([filesAPI.videoFileName length] != 0) {
+    if ([[SQFilesAPI sharedInstance].videoFileName length] != 0) {
         // setup video and add observes
         [self initializeAndAddVideoToView];
         
@@ -176,10 +172,8 @@
 #pragma mark Videoplayer Methods
 
 - (void)initializeAndAddVideoToView {
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
-    
     // set up videoPlayer with local video file
-    NSString *filepath = [[NSBundle mainBundle] pathForResource:filesAPI.videoFileName ofType:nil inDirectory:@"Video"];
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:[SQFilesAPI sharedInstance].videoFileName ofType:nil inDirectory:@"Video"];
     NSURL *fileURL = [NSURL fileURLWithPath:filepath];
     
     _avPlayer = [AVPlayer playerWithURL:fileURL];
@@ -249,8 +243,7 @@
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
-    if ([filesAPI.videoFileName length] != 0) {
+    if ([[SQFilesAPI sharedInstance].videoFileName length] != 0) {
         return UIStatusBarStyleLightContent;
     } else {
         return UIStatusBarStyleDefault;
@@ -275,10 +268,9 @@
 // close button tapped
 - (void)closeButtonPressed {
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
-    if ([filesAPI.fileSelectedHandler respondsToSelector:@selector(closeButtonPressed)]) {
-        SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
+    if ([filesAPI.delegate respondsToSelector:@selector(closeButtonPressed)]) {
         filesAPI.selectedFileID = nil;
-        [filesAPI.fileSelectedHandler closeButtonPressed];
+        [filesAPI.delegate closeButtonPressed];
     }
 }
 
@@ -330,7 +322,6 @@
 
 - (BOOL)isVideoWhite {
     BOOL videoFileIsWhite = NO;
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     
     NSArray *arrayOfVideoFilesWithWhiteBarInTheTop = @[@"shutterstock_v120847.mp4",
                                                        @"shutterstock_v1126162.mp4",
@@ -340,7 +331,7 @@
                                                        @"shutterstock_v4627466.mp4",
                                                        @"shutterstock_v5468858.mp4"];
     
-    if ([arrayOfVideoFilesWithWhiteBarInTheTop containsObject:filesAPI.videoFileName]) {
+    if ([arrayOfVideoFilesWithWhiteBarInTheTop containsObject:[SQFilesAPI sharedInstance].videoFileName]) {
         videoFileIsWhite = YES;
     }
     return videoFileIsWhite;

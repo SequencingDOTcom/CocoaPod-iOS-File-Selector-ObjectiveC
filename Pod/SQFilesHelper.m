@@ -140,19 +140,16 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 #pragma mark Add file into section
 
 + (void)addFile:(NSDictionary *)file intoSection:(SQSectionInfo *)section {
-    CGFloat tempHeight = 44.f;
+    CGFloat tempHeight = 35.f;
     
     if ([section.sectionName containsString:@"Sample"] || [section.sectionName containsString:@"All"] || [section.sectionName containsString:@"Men"] || [section.sectionName containsString:@"Women"]) {
         
         //calculate height for sample file
-        
-        // NSString *tempText = [self prepareTextFromFile:file AndFileType:section.sectionName];
         NSAttributedString *tempText = [self prepareTextFromSampleFile:file];
         tempHeight = [self heightForRowSampleFile:tempText];
         
     } else {
         // otherwise calculate height for my file
-        
         NSString *tempText = [self prepareTextFromMyFile:file];
         tempHeight = [self heightForRow:tempText];
     }
@@ -165,43 +162,12 @@ static NSString *const ALTRUIST_FILES_CATEGORY_TAG      = @"AllWithAltruist";
 #pragma mark Height for row
 
 + (CGFloat)heightForRow:(NSString *)text {
-    UIFont *font = [UIFont systemFontOfSize:13.f];
-    
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowOffset = CGSizeMake(0, -1);
-    shadow.shadowBlurRadius = 0.5;
-    
-    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-    [paragraph setLineBreakMode:NSLineBreakByWordWrapping];
-    [paragraph setAlignment:NSTextAlignmentLeft];
-    
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                font, NSFontAttributeName,
-                                paragraph, NSParagraphStyleAttributeName,
-                                shadow, NSShadowAttributeName, nil];
-    
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(270, CGFLOAT_MAX)
-                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                  attributes:attributes
-                                     context:nil];
-    
-    if (CGRectGetHeight(rect) < 42.960938f) {
-        return 44.0f;
-    } else {
-        return CGRectGetHeight(rect) + 10;
-    }
+    return 35.f;
 }
 
 
 + (CGFloat)heightForRowSampleFile:(NSAttributedString *)text {
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(260, CGFLOAT_MAX)
-                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                     context:nil];
-    if (CGRectGetHeight(rect) < 40.f) {
-        return 44.0f;
-    } else {
-        return CGRectGetHeight(rect) + 15;
-    }
+    return 35.f;
 }
 
 

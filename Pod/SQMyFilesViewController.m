@@ -17,6 +17,8 @@
 #define kMainQueue dispatch_get_main_queue()
 
 
+
+
 @interface SQMyFilesViewController () <UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -39,10 +41,11 @@
 @end
 
 
+
+
 @implementation SQMyFilesViewController
 
-#pragma mark -
-#pragma mark View Lyfecycle
+#pragma mark - View Lyfecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,13 +74,6 @@
     UITabBarItem *tabBarItem_SampleFiles = (UITabBarItem *)[self.tabBarController.tabBar.items objectAtIndex:1];
     tabBarItem_SampleFiles.image = [UIImage imageNamed:@"icon_samplefiles"];
     
-    /*
-    // infoButton
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [button addTarget:self action:@selector(showInfoPopover) forControlEvents:UIControlEventTouchUpInside];
-    self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:button];*/
-    
-    
     // continueButton
     self.continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue"
                                                            style:UIBarButtonItemStyleDone
@@ -105,6 +101,9 @@
     
     // allows using "native" radio button for selecting row
     [self.tableView setEditing:YES animated:YES];
+    
+    [self.tableView setEstimatedRowHeight:20.f];
+    [self.tableView setRowHeight:UITableViewAutomaticDimension];
     
     // prepare array with segmented control items and indexes in source
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
@@ -259,8 +258,7 @@
 
 
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (void)segmentControlAction:(UISegmentedControl *)sender {
     self.nowSelectedFileIndexPath = nil;
@@ -310,7 +308,7 @@
     NSDictionary *selectedFile = [[NSDictionary alloc] init];
     selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
     
-    [[[SQFilesAPI sharedInstance] fileSelectedHandler] handleFileSelected:selectedFile];
+    [[[SQFilesAPI sharedInstance] delegate] handleFileSelected:selectedFile];
 }
 
 
@@ -318,26 +316,20 @@
 - (void)closeButtonPressed {
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     
-    if ([filesAPI.fileSelectedHandler respondsToSelector:@selector(closeButtonPressed)]) {
-        SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
+    if ([filesAPI.delegate respondsToSelector:@selector(closeButtonPressed)]) {
         filesAPI.selectedFileID = nil;
-        
-        [filesAPI.fileSelectedHandler closeButtonPressed];
+        [filesAPI.delegate closeButtonPressed];
     }
 }
 
 
 
-#pragma mark -
-#pragma mark UITableViewDataSource
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.filesArray count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [(self.filesHeightsArray)[indexPath.row] floatValue];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"cell";
@@ -356,8 +348,7 @@
 
 
 
-#pragma mark -
-#pragma mark Cells selection
+#pragma mark - Cells selection
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     return 3;
@@ -375,11 +366,10 @@
     self.continueButton.enabled = YES;
     
     // note selected file, in order to be preselected when get back to current section
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     NSDictionary *selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
     NSString *fileID = [selectedFile objectForKey:@"Id"];
     if ([fileID length] != 0) {
-        filesAPI.selectedFileID = fileID;
+        [SQFilesAPI sharedInstance].selectedFileID = fileID;
     }
 }
 
@@ -387,8 +377,7 @@
     self.nowSelectedFileIndexPath = nil;
     self.continueButton.enabled = NO;
     
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
-    filesAPI.selectedFileID = nil;
+    [SQFilesAPI sharedInstance].selectedFileID = nil;
 }
 
 
@@ -410,60 +399,8 @@
 }
 
 
-/*
-#pragma mark -
-#pragma mark Navigation */
 
-/*
-- (void)showDetails {
-    [self performSegueWithIdentifier:@"SHOW_FILE_DETAILS" sender:nil];
-} */
-
-/*
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    NSDictionary *selectedFile = [[NSDictionary alloc] init];
-    SQSectionInfo *sectionInfo = (self.sampleSectionInfoArray)[self.nowSelectedFileIndexPath.section];
-    selectedFile = [sectionInfo.filesArray objectAtIndex:self.nowSelectedFileIndexPath.row];
-    
-    self.fileDetails.text = [SQDemoDataCell prepareText:self.nowSelectedFile];
-     
-    if ([segue.destinationViewController isKindOfClass:[DetailsViewController class]]) {
-        [[segue destinationViewController] setNowSelectedFile:selectedFile];
-    }
-} */
-
-
-/*
-#pragma mark -
-#pragma mark Popover
-
-- (void)showInfoPopover {
-    UIViewController *popoverContentController = [[UIViewController alloc] initWithNibName:@"SQPopoverInfoViewController" bundle:nil];
-    
-    CGFloat height = [SQPopoverInfoViewController heightForPopoverWidth:self.view.bounds.size.width - 30];
-    popoverContentController.preferredContentSize = CGSizeMake(self.view.bounds.size.width - 30, height);
-    
-    // Set the presentation style to modal and delegate so that the below methods get called
-    popoverContentController.modalPresentationStyle = UIModalPresentationPopover;
-    popoverContentController.popoverPresentationController.delegate = self;
-    
-    [self presentViewController:popoverContentController animated:YES completion:nil];
-}
-
-- (void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController {
-    popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popoverPresentationController.barButtonItem = self.infoButton;
-}
-
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
-    return UIModalPresentationNone;
-} */
-
-
-
-#pragma mark -
-#pragma mark Other Methods
+#pragma mark - Other Methods
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
