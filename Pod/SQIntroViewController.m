@@ -10,13 +10,15 @@
 #import "SQPopoverInfoViewController.h"
 #import "SQFilesAPI.h"
 #import "SQFilesContainer.h"
+#import "SQMyFilesViewController.h"
+#import "SQSampleFilesViewController.h"
 
 
 #define FILES_CONTROLLER_SEGUE_ID @"SHOW_FILES_SEGUE_ID"
 
 
 
-@interface SQIntroViewController () <UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate>
+@interface SQIntroViewController () <UIGestureRecognizerDelegate, UIPopoverPresentationControllerDelegate, MyFilesViewControllerClosedProtocol, SampleFilesViewControllerClosedProtocol>
 
 // info button
 @property (strong, nonatomic) UIBarButtonItem    *infoButton;
@@ -273,6 +275,16 @@
         [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
         [filesAPI.delegate closeButtonPressed];
     }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)myFilesViewControllerClosed {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)sampleFilesViewControllerClosed {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -310,6 +322,16 @@
     if ([segue.identifier isEqual:FILES_CONTROLLER_SEGUE_ID]) {
         NSNumber *indexToShow = sender;
         UITabBarController *tabBar = segue.destinationViewController;
+        
+        UINavigationController *myfilesNav     = [[tabBar viewControllers] firstObject];
+        UINavigationController *samplefilesNav = [[tabBar viewControllers] lastObject];
+        
+        SQMyFilesViewController     *myfilesVC     = [[myfilesNav viewControllers] firstObject];
+        SQSampleFilesViewController *samplefilesVC = [[samplefilesNav viewControllers] firstObject];
+        
+        myfilesVC.viewCloseDelegate = self;
+        samplefilesVC.viewCloseDelegate = self;
+        
         [tabBar setSelectedIndex:indexToShow.unsignedIntegerValue];
     }
 }

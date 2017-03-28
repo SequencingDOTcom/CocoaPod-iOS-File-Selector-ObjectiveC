@@ -235,6 +235,8 @@
     selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
     [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
     [[[SQFilesAPI sharedInstance] delegate] selectedGeneticFile:selectedFile];
+    [self dismissViewControllerAnimated:NO completion:nil];
+    [_viewCloseDelegate sampleFilesViewControllerClosed];
 }
 
 
@@ -246,6 +248,8 @@
         [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
         [filesAPI.delegate closeButtonPressed];
     }
+    [self dismissViewControllerAnimated:NO completion:nil];
+    [_viewCloseDelegate sampleFilesViewControllerClosed];
 }
 
 

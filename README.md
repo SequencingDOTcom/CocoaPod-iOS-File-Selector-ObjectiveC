@@ -75,7 +75,7 @@ Please follow this guide to install File Selector module in your existed or new 
 		
 * specify following parameters in Podfile: 
 	```
-	pod 'sequencing-file-selector-api-objc', '~> 1.2.1'
+	pod 'sequencing-file-selector-api-objc', '~> 1.3.0'
 	```		
 		
 * install the dependency in your project: 

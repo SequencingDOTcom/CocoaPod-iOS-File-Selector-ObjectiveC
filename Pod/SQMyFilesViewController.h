@@ -6,7 +6,18 @@
 #import <UIKit/UIKit.h>
 
 
+@protocol MyFilesViewControllerClosedProtocol <NSObject>
+
+- (void)myFilesViewControllerClosed;
+
+@end
+
+
+
+
 @interface SQMyFilesViewController : UIViewController
+
+@property (weak, nonatomic) id<MyFilesViewControllerClosedProtocol> viewCloseDelegate;
 
 @end
 

@@ -6,6 +6,15 @@
 #import <UIKit/UIKit.h>
 
 
+@protocol SampleFilesViewControllerClosedProtocol <NSObject>
+
+- (void)sampleFilesViewControllerClosed;
+
+@end
+
+
 @interface SQSampleFilesViewController : UIViewController
+
+@property (weak, nonatomic) id<SampleFilesViewControllerClosedProtocol> viewCloseDelegate;
 
 @end
