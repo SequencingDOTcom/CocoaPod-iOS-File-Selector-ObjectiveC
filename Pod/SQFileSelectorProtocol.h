@@ -1,14 +1,16 @@
 //
 //  SQFileSelectorProtocol.h
-//  Copyright © 2015-2016 Sequencing.com. All rights reserved
+//  Copyright © 2017 Sequencing.com. All rights reserved
 //
 
 #import <Foundation/Foundation.h>
 
+
 @protocol SQFileSelectorProtocol <NSObject>
 
 @required
-- (void)handleFileSelected:(NSDictionary *)file;
+- (void)selectedGeneticFile:(NSDictionary *)file;
+- (void)errorWhileReceivingGeneticFiles:(NSError *)error;
 
 @optional
 - (void)closeButtonPressed;

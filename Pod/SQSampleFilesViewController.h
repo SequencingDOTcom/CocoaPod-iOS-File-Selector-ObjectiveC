@@ -1,6 +1,6 @@
 //
 //  SQSampleFilesViewController.h
-//  Copyright © 2015-2016 Sequencing.com. All rights reserved
+//  Copyright © 2017 Sequencing.com. All rights reserved
 //
 
 #import <UIKit/UIKit.h>

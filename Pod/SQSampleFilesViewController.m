@@ -1,6 +1,6 @@
 //
 //  SQSampleFilesViewController.m
-//  Copyright © 2015-2016 Sequencing.com. All rights reserved
+//  Copyright © 2017 Sequencing.com. All rights reserved
 //
 
 #import "SQSampleFilesViewController.h"
@@ -29,11 +29,11 @@
 @property (strong, nonatomic) NSArray *filesHeightsArray;
 
 // buttons
-@property (strong, nonatomic) UIBarButtonItem *continueButton;
+@property (strong, nonatomic) UIBarButtonItem    *continueButton;
 
 // file details / selection index
-@property (strong, nonatomic) NSIndexPath   *nowSelectedFileIndexPath;
-@property (strong, nonatomic) NSDictionary  *categoryIndexes;
+@property (strong, nonatomic) NSIndexPath        *nowSelectedFileIndexPath;
+@property (strong, nonatomic) NSDictionary       *categoryIndexes;
 
 @property (strong, nonatomic) UISegmentedControl *fileTypeSelect;
 
@@ -50,6 +50,7 @@
     [super viewDidLoad];
     
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
+    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     
     // prepare navigation bar
     self.title = @"Sample Files";
@@ -87,7 +88,7 @@
     self.navigationItem.rightBarButtonItems = rightButtonsArray;
     
     // closeButton
-    if (filesAPI.closeButton) {
+    if (filesContainer.showCloseButton) {
         UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
                                                                                      target:self
                                                                                      action:@selector(closeButtonPressed)];
@@ -106,8 +107,6 @@
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     
     // prepare array with segmented control items and indexes in source
-    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
-    
     NSDictionary *itemsAndIndexes = [SQSegmentedControlHelper prepareSegmentedControlItemsAndCategoryIndexes:filesContainer.sampleSectionsArray];
     NSArray *segmentedControlItems = [itemsAndIndexes objectForKey:@"items"];
     self.categoryIndexes = [itemsAndIndexes objectForKey:@"indexes"];
@@ -147,13 +146,11 @@
     
     
     // show notification message if there are no my files at all
-    if (![[[[self.tabBarController tabBar] items] objectAtIndex:0] isEnabled]) {
+    if (![[[[self.tabBarController tabBar] items] objectAtIndex:0] isEnabled])
         [self showMyFilesPopover];
-    }
     
-    if (!([filesContainer.mySectionsArray count] > 0)) {
-        [[[[self.tabBarController tabBar]items]objectAtIndex:0]setEnabled:FALSE];
-    }
+    if (!([filesContainer.mySectionsArray count] > 0))
+        [[[[self.tabBarController tabBar] items] objectAtIndex:0] setEnabled:FALSE];
 }
 
 
@@ -161,26 +158,24 @@
     [super viewDidAppear:YES];
     
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
+    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     NSNumber *fileIndexInArray = nil;
     
     NSString *selectedSegmentItem = [self.fileTypeSelect titleForSegmentAtIndex:self.fileTypeSelect.selectedSegmentIndex];
     int indexOfSectionInArray = [[self.categoryIndexes objectForKey:selectedSegmentItem] intValue];
     
-    if ([filesAPI.selectedFileID length] != 0) {
-        fileIndexInArray = [SQFilesHelper checkIfSelectedFileID:filesAPI.selectedFileID
+    if ([filesContainer.selectedFileID length] != 0)
+        fileIndexInArray = [SQFilesHelper checkIfSelectedFileID:filesContainer.selectedFileID
                                              isPresentInSection:indexOfSectionInArray
                                                     forCategory:@"sample"];
-    }
     
-    if (fileIndexInArray) {
+    if (fileIndexInArray)
         _nowSelectedFileIndexPath = [NSIndexPath indexPathForRow:[fileIndexInArray integerValue] inSection:0];
-    } else {
+    else
         _nowSelectedFileIndexPath = nil;
-    }
     
-    if (_nowSelectedFileIndexPath) {
+    if (_nowSelectedFileIndexPath)
         [self preselectFileInCurrentSection];
-    }
 }
 
 
@@ -188,7 +183,6 @@
     [super viewWillDisappear:YES];
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
     if (indexPath) {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         self.continueButton.enabled = NO;
@@ -219,26 +213,22 @@
     self.filesHeightsArray = section.rowHeights;
     [self.tableView reloadData];
     
-    
     // preselect file by index if any
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     NSNumber *fileIndexInArray = nil;
     
-    if ([filesAPI.selectedFileID length] != 0) {
-        fileIndexInArray = [SQFilesHelper checkIfSelectedFileID:filesAPI.selectedFileID
+    if ([filesContainer.selectedFileID length] != 0)
+        fileIndexInArray = [SQFilesHelper checkIfSelectedFileID:filesContainer.selectedFileID
                                              isPresentInSection:indexOfSectionInArray
                                                     forCategory:@"sample"];
-    }
     
-    if (fileIndexInArray) {
+    if (fileIndexInArray)
         _nowSelectedFileIndexPath = [NSIndexPath indexPathForRow:[fileIndexInArray integerValue] inSection:0];
-    } else {
+    else
         _nowSelectedFileIndexPath = nil;
-    }
     
-    if (_nowSelectedFileIndexPath) {
+    if (_nowSelectedFileIndexPath)
         [self preselectFileInCurrentSection];
-    }
 }
 
 
@@ -246,8 +236,8 @@
 - (void)fileIsSelected {
     NSDictionary *selectedFile = [[NSDictionary alloc] init];
     selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
-    
-    [[[SQFilesAPI sharedInstance] delegate] handleFileSelected:selectedFile];
+    [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
+    [[[SQFilesAPI sharedInstance] delegate] selectedGeneticFile:selectedFile];
 }
 
 
@@ -256,7 +246,7 @@
     SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     
     if ([filesAPI.delegate respondsToSelector:@selector(closeButtonPressed)]) {
-        filesAPI.selectedFileID = nil;
+        [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
         [filesAPI.delegate closeButtonPressed];
     }
 }
@@ -304,18 +294,19 @@
     }
     self.continueButton.enabled = YES;
     
+    SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     // note selected file, in order to be preselected when get back to current section
     NSDictionary *selectedFile = (self.filesArray)[self.nowSelectedFileIndexPath.row];
     NSString *fileID = [selectedFile objectForKey:@"Id"];
+    
     if ([fileID length] != 0)
-        [SQFilesAPI sharedInstance].selectedFileID = fileID;
+        filesContainer.selectedFileID = fileID;
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.nowSelectedFileIndexPath = nil;
     self.continueButton.enabled = NO;
-    
-    [SQFilesAPI sharedInstance].selectedFileID = nil;
+    [[SQFilesContainer sharedInstance] setSelectedFileID:nil];
 }
 
 
@@ -370,14 +361,6 @@
     return UIModalPresentationNone;
 }
 
-
-
-#pragma mark - Other Methods
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 
 @end
