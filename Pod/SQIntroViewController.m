@@ -52,8 +52,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
+    
     self.videoFileName = filesContainer.videoFileName;
     UIColor *defaultTextColor = [UIColor blackColor];
     

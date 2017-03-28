@@ -50,7 +50,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     
     // prepare navigation bar

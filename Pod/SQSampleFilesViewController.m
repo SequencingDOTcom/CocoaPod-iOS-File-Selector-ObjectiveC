@@ -49,7 +49,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     
     // prepare navigation bar
@@ -157,7 +156,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     NSNumber *fileIndexInArray = nil;
     
@@ -214,7 +212,6 @@
     [self.tableView reloadData];
     
     // preselect file by index if any
-    SQFilesAPI *filesAPI = [SQFilesAPI sharedInstance];
     NSNumber *fileIndexInArray = nil;
     
     if ([filesContainer.selectedFileID length] != 0)
