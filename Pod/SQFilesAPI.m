@@ -54,6 +54,7 @@
            backgroundVideoFileName:(NSString *)videoFileName
                           delegate:(UIViewController<SQFileSelectorProtocol> *)delegate {
     if (!delegate) return;
+    self.delegate = delegate;
     
     [tokenProvider token:^(SQToken *token, NSString *accessToken) {
         if (!token || !accessToken || [accessToken length] == 0) {
@@ -61,13 +62,12 @@
             [_delegate errorWhileReceivingGeneticFiles:nil];
             return;
         }
+        self.accessToken = accessToken;
         
         SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
         [filesContainer setShowCloseButton: showCloseButton];
         [filesContainer setVideoFileName:   videoFileName];
         [filesContainer setSelectedFileID:  selectedFileID];
-        self.delegate = delegate;
-        self.accessToken = accessToken;
         
         // send request to server to get files assigned to account and then parse these files into categories and subcategories
         [self loadFilesWithToken:accessToken result:^(NSArray *files, NSError *error) {
