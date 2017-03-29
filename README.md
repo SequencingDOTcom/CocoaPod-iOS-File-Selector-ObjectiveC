@@ -1,12 +1,11 @@
 # File Selector CocoPod plugin for adding Sequencing.com's Real-Time Personalization technology to iOS apps coded in Objective-C
-=========================================
-This repo contains the plug-n-play CocoPod for implementing a customizable File Selector so your app can access files stored securely at [Sequencing.com](https://sequencing.com/). 
+This repo contains the plug-n-play CocoaPods plugin for implementing a customizable File Selector so your app can access files stored securely at [Sequencing.com](https://sequencing.com/). 
 
 This CocoPod can be used to quickly add a File Selector to your app. By adding this File Selector to your app, you're app user will be able to select a file stored securely in the user's Sequencing.com account. Your app will then be able to use the genetic data in this file to provide the user with Real-Time Personalization.
 
 While the File Selector works out-of-the-box, it is also fully customizable.
 
-A 'Master CocoPod Plugin' is also available. The Master Plugin contains a customizable, end-to-end solution that quickly adds all necessary code to your app for Sequencing.com's Real-Time Personalization. 
+A 'Master CocoaPods Plugin' is also available. The Master Plugin contains a customizable, end-to-end solution that quickly adds all necessary code to your app for Sequencing.com's Real-Time Personalization. 
 
 Once the Master Plugin is added to your app all you'll need to do is:
 
@@ -62,7 +61,7 @@ Please follow this guide to install File Selector module in your existed or new 
 	https://cocoapods.org > getting started
 	```
 		
-* oAuth CocoaPod plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
+* oAuth CocoaaPods plugin reference: [Objective-C (CocoaPod plugin)](https://github.com/SequencingDOTcom/CocoaPod-iOS-OAuth-ObjectiveC)
 
 * File selector module prepared as separate module, but it depends on a Token object from oAuth module. File selector can execute request to server for files with token object only. Thus you need 2 modules to be installed: ```oAuth``` module and ```File Selector``` module 
 
