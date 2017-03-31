@@ -255,13 +255,14 @@
     
     SQFilesContainer *filesContainer = [SQFilesContainer sharedInstance];
     SQSectionInfo *section = [[SQSectionInfo alloc] init];
-    self.filesArray = section.filesArray;
-    self.filesHeightsArray = section.rowHeights;
-    [self.tableView reloadData];
     
     NSString *selectedSegmentItem = [sender titleForSegmentAtIndex:sender.selectedSegmentIndex];
     int indexOfSectionInArray = [[self.categoryIndexes objectForKey:selectedSegmentItem] intValue];
     section = (filesContainer.mySectionsArray)[indexOfSectionInArray];
+    
+    self.filesArray = section.filesArray;
+    self.filesHeightsArray = section.rowHeights;
+    [self.tableView reloadData];
     
     // preselect file if there is on in current section selected
     NSNumber *fileIndexInArray = nil;
