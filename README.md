@@ -132,10 +132,10 @@ Please follow this guide to install File Selector module in your existed or new 
 
 * call file selector via method ```showFilesWithTokenProvider: showCloseButton: previouslySelectedFileID: delegate:```
 	```
-	- (void)showFilesWithTokenProvider:(id<SQTokenAccessProtocol>)tokenProvider
-					showCloseButton:(BOOL)showCloseButton
-					previouslySelectedFileID:(NSString *)selectedFileID
-					delegate:(UIViewController<SQFileSelectorProtocol> *)delegate;
+	[[SQFilesAPI sharedInstance] showFilesWithTokenProvider:[SQOAuth sharedInstance]
+                                            showCloseButton:<yes or no>
+                                   previouslySelectedFileID:@"your file id"
+                                                   delegate:<your VC delegate>];
 	```
 	
 	where
