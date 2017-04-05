@@ -101,7 +101,7 @@ Please follow this guide to install File Selector module in your existed or new 
 	#import "SQFileSelectorProtocol.h"
 	```	
 		
-* subscribe your class to file selector protocol: 
+* subscribe your UIViewController class to file selector protocol: 
 	```
 	<SQFileSelectorProtocol>
 	```
